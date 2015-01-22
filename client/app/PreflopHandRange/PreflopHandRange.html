@@ -1,0 +1,43 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <article class="content">
+        <button class="btn btn-primary" ng-click="backToHand()">Back To Hand</button>
+        <button class="btn btn-primary" ng-click="toggleShowList()">Toggle show list</button>
+        <button class="btn btn-primary" ng-click="toggleShowRange()">Toggle show range</button>
+
+        <div ng-show="ShowList">
+            <header class="page-header">
+                <h2>Preflop Hands</h2>
+            </header>
+        </div>
+
+        <div ng-show="ShowRange">
+            <header class="page-header">
+                <h2>{{position}} hand range</h2>
+            </header>
+
+            <div class="container">
+                <div class="row">
+                    <hand-chart hand-range="handRange"></hand-chart>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="text" ng-model="handRangeStr" ng-focus="editingRangeStr=true" ng-blur="editingRangeStr=false"  class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </article>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>Angular Fullstack v2.0.13 |
+            <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+            <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+    </div>
+</footer>
