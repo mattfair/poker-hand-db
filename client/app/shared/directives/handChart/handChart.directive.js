@@ -7,7 +7,7 @@ angular.module('handDbApp')
 
 
             $scope.rangeChanged = function(name) {
-                //alert('range changed for'+name+" it is enabled "+$scope.handRange[name]);
+                $scope.callback();
             }
         }];
 
@@ -16,7 +16,8 @@ angular.module('handDbApp')
       templateUrl: 'app/shared/directives/handChart/handChart.html',
       restrict: 'EA',
         scope: {
-            handRange: '=' //@ reads the attribute value, = provides two-way binding, & works with functions
+            handRange: '=', //@ reads the attribute value, = provides two-way binding, & works with functions
+            callback: '&'
         },
         controller: controller
     };

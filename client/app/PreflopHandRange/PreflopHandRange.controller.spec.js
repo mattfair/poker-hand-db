@@ -14,18 +14,15 @@ describe('Controller: PreflopHandRangeCtrl', function () {
     PreflopHandRangeCtrl = $controller('PreflopHandRangeCtrl', {
       $scope: scope
     });
-  }));
+  }))
 
   xit('when a card in the card map is true, it should show up in the range text', function () {
-      scope.handRange["22"] = true;
-      scope.$digest();
-      expect(scope.handRangeStr).to.have.string("22,")
-      scope.handRange["44"] = true;
-      scope.$digest();
-      expect(scope.handRangeStr).to.have.string("44,")
-      scope.handRange["AKs"] = true;
-      scope.$digest();
-      expect(scope.handRangeStr).to.have.string("AKs,")
+      scope.$apply(function() {scope.handRange["22"] = true;});
+      expect(scope.handRangeStr).to.have.string("22,");
+      scope.$apply(function() {scope.handRange["44"] = true;});
+      expect(scope.handRangeStr).to.have.string("44,");
+      scope.$apply(function() {scope.handRange["AKs"] = true;});
+      expect(scope.handRangeStr).to.have.string("AKs,");
   });
 
 

@@ -156,14 +156,18 @@ angular.module('handDbApp')
             return cards.substr(start, length);
         };
 
-        this.handRangeToString = function (handArray) {
+        this.handRangeToString = function (handMap) {
             var handStr = "";
-            for(var hand in handArray){
-                if(handArray[hand]){
-                    handStr += hand + ',';
+            var myHandsArray = [];
+            for(var hand in handMap){
+                if(handMap[hand]){
+                    myHandsArray.push(hand);
                 }
             }
-            return handStr;
+            console.log(myHandsArray);
+            myHandsArray.reverse();
+            console.log(myHandsArray);
+            return myHandsArray.join(",");
         };
 
         this.handRangeStringCompress = function (handRangeString) {

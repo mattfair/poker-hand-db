@@ -16,10 +16,6 @@ angular.module('handDbApp')
             }
         });
 
-//        $scope.$watch(function($scope) { return $scope.handRange; },
-//            function($scope) {$scope.rangeArrayChanged();}
-//        );
-
         $scope.toggleShowList = function() {
             $scope.ShowList = $scope.ShowList === 1 ? 0 : 1;
         };
@@ -33,6 +29,6 @@ angular.module('handDbApp')
         };
 
         $scope.rangeArrayChanged = function() {
-            $scope.handRangeStr = HandRangeUtils.handRangeArrayToString($scope.handRangeStr);
+            $scope.handRangeStr = HandRangeUtils.handRangeToString($scope.handRange);
         };
 });
