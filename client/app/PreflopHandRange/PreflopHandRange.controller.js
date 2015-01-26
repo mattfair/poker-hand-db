@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('handDbApp')
-  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils) {
+  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope) {
         $scope.ShowList = 0;
         $scope.ShowRange = 0;
         $scope.position = '';
@@ -29,7 +29,6 @@ angular.module('handDbApp')
         };
 
         $scope.rangeArrayChanged = function() {
-            $scope.$apply();
             var str = HandRangeUtils.handRangeToString($scope.handRange);
             $scope.handRangeStr = HandRangeUtils.handRangeStringCompress(str);
         };

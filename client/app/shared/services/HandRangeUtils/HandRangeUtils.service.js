@@ -39,54 +39,56 @@ angular.module('handDbApp')
                 var courseHandParsing = /([AKQJT98765432][AKQJT98765432][so]|[AKQJT98765432]{2})-([AKQJT98765432][AKQJT98765432][so]|[AKQJT98765432]{2})|([AKQJT98765432][AKQJT98765432][so]|[AKQJT98765432]{2})|([AKQJT98765432](x|d|s|h|c)[AKQJT98765432](x|d|s|h|c))/g;
                 var match = courseHandParsing.exec(hand);
 
-                if (match[1] != undefined && match[2] != undefined) {
-                    var hand1 = match[1];
-                    var hand2 = match[2];
-                    var parsedHand1 = this.parseHand(hand1);
-                    var parsedHand2 = this.parseHand(hand2);
+                if(match != null) {
+                    if (match[1] != undefined && match[2] != undefined) {
+                        var hand1 = match[1];
+                        var hand2 = match[2];
+                        var parsedHand1 = this.parseHand(hand1);
+                        var parsedHand2 = this.parseHand(hand2);
 
-                    //pairs diaganal range
-                    if (parsedHand1.card1 == parsedHand1.card2) {
-                        var expandedHandRange = this.expandRange(parsedHand1.card1, parsedHand2.card1);
-                        for (var i = 0; i < expandedHandRange.length; i++) {
-                            var card = expandedHandRange[i];
-                            myExpandedRange.push(card + card);
+                        //pairs diaganal range
+                        if (parsedHand1.card1 == parsedHand1.card2) {
+                            var expandedHandRange = this.expandRange(parsedHand1.card1, parsedHand2.card1);
+                            for (var i = 0; i < expandedHandRange.length; i++) {
+                                var card = expandedHandRange[i];
+                                myExpandedRange.push(card + card);
+                            }
                         }
-                    }
 
-                    //vertical range
-                    else if (parsedHand1.card1 == parsedHand2.card1) {
-                        var expandedHandRange = this.expandRange(parsedHand1.card2, parsedHand2.card2);
-                        for (var i = 0; i < expandedHandRange.length; i++) {
-                            var card = expandedHandRange[i];
-                            myExpandedRange.push(parsedHand1.card1 + card + parsedHand2.suitedness);
+                        //vertical range
+                        else if (parsedHand1.card1 == parsedHand2.card1) {
+                            var expandedHandRange = this.expandRange(parsedHand1.card2, parsedHand2.card2);
+                            for (var i = 0; i < expandedHandRange.length; i++) {
+                                var card = expandedHandRange[i];
+                                myExpandedRange.push(parsedHand1.card1 + card + parsedHand2.suitedness);
+                            }
                         }
-                    }
 
-                    //horizontal range
-                    else {
-                        var expandedHandRange = this.expandRange(parsedHand1.card1, parsedHand2.card1);
-                        for (var i = 0; i < expandedHandRange.length; i++) {
-                            var card = expandedHandRange[i];
-                            myExpandedRange.push(card + parsedHand1.card2 + parsedHand2.suitedness);
+                        //horizontal range
+                        else {
+                            var expandedHandRange = this.expandRange(parsedHand1.card1, parsedHand2.card1);
+                            for (var i = 0; i < expandedHandRange.length; i++) {
+                                var card = expandedHandRange[i];
+                                myExpandedRange.push(card + parsedHand1.card2 + parsedHand2.suitedness);
+                            }
                         }
-                    }
-                } else {
-                    if (match[3] != undefined) {
-                        var parsedHand = this.parseHand(match[3]);
-                        if (parsedHand.card1 == parsedHand.card2 || parsedHand.suitedness != undefined) {
-                            myExpandedRange.push(match[3]);
-                        } else {
-                            myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "s");
-                            myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "o");
-                        }
-                    } else if (match[4] != undefined) {
-                        var parsedHand = this.parseHand(match[3]);
-                        if (parsedHand.suitedness != undefined) {
-                            myExpandedRange.push(match[3]);
-                        } else {
-                            //for the pocket pairs
-                            myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "s");
+                    } else {
+                        if (match[3] != undefined) {
+                            var parsedHand = this.parseHand(match[3]);
+                            if (parsedHand.card1 == parsedHand.card2 || parsedHand.suitedness != undefined) {
+                                myExpandedRange.push(match[3]);
+                            } else {
+                                myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "s");
+                                myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "o");
+                            }
+                        } else if (match[4] != undefined) {
+                            var parsedHand = this.parseHand(match[3]);
+                            if (parsedHand.suitedness != undefined) {
+                                myExpandedRange.push(match[3]);
+                            } else {
+                                //for the pocket pairs
+                                myExpandedRange.push(parsedHand.card1 + parsedHand.card2 + "s");
+                            }
                         }
                     }
                 }
@@ -102,8 +104,12 @@ angular.module('handDbApp')
 
             var handCard1, handCard1Suite, handCard2, handCard2Suite, handSuitedness;
 
+            if(match == null){
+                handCard1 = "";
+                handCard2 = "";
+            }
             //Basic hand definition (AKs, JTo, etc)
-            if (match[1] != undefined && match[2] != undefined) {
+            else if (match[1] != undefined && match[2] != undefined) {
                 handCard1 = match[1];
                 handCard2 = match[2];
                 handSuitedness = match[3];
@@ -236,6 +242,19 @@ angular.module('handDbApp')
             return {streaks: streaks, other:other};
         }
 
+
+        this.safeAddRange = function(handRangeArray, newRangeStr){
+            var handRangeStr = handRangeArray.join(',');
+            var compRange = this.handRangeStringCompress(this.findCompliment(handRangeStr, newRangeStr));
+            var compRangeArray = compRange.split(',');
+            for(var i=0; i<compRangeArray.length; i++){
+                if(compRangeArray[i].length > 0) {
+                    handRangeArray.push(compRangeArray[i]);
+                }
+            }
+
+            return handRangeArray;
+        }
         /**
          * Add to hand range
          * @param streaks compresses streaks
@@ -260,7 +279,8 @@ angular.module('handDbApp')
                                 var hand1 = start + start;
                                 var hand2 = end + end;
                                 var range = hand1+"-"+hand2;
-                                handRange.push(range);
+
+                                handRange = this.safeAddRange(handRange, range);
                             } else if(type == 1){
 
                                 var isBigger = this.sortPokerCards(start,card) > 0;
@@ -270,7 +290,7 @@ angular.module('handDbApp')
                                 var hand2 = (isBigger? card + end : end + card)+suit;
 
                                 var range = hand1+"-"+hand2;
-                                handRange.push(range);
+                                handRange = this.safeAddRange(handRange, range);
                             } else {
                                 var isBigger = this.sortPokerCards(end,card) > 0;
 
@@ -279,7 +299,7 @@ angular.module('handDbApp')
                                 var hand2 = (isBigger? card + end : end + card)+suit;
 
                                 var range = hand1+"-"+hand2;
-                                handRange.push(range);
+                                handRange = this.safeAddRange(handRange, range);
 
                             }
                         }
@@ -308,15 +328,15 @@ angular.module('handDbApp')
 
             var cards="AKQJT98765432";
 
-            //suited
-            for(var i=0; i<cards.length;  i++){
-                verticalStreaks[cards[i]+"s"] = new Array();
-                horizontalStreaks[cards[i]+"s"] = new Array();
-            };
             //un-suited
             for(var i=0; i<cards.length;  i++){
                 verticalStreaks[cards[i]+"o"] = new Array();
                 horizontalStreaks[cards[i]+"o"] = new Array();
+            };
+            //suited
+            for(var i=0; i<cards.length;  i++){
+                verticalStreaks[cards[i]+"s"] = new Array();
+                horizontalStreaks[cards[i]+"s"] = new Array();
             };
 
             var handArray = handRangeString.split(",");
@@ -385,5 +405,30 @@ angular.module('handDbApp')
                 }
             }
             return false;
+        }
+
+        /**
+         * Given two range strings, find a new range string that is A-B or A compliment B
+         * @param rangeBStr
+         * @param rangeAStr
+         */
+        this.findCompliment = function(rangeBStr, rangeAStr){
+            if(rangeBStr == ""){
+                return rangeAStr;
+            }
+
+            var expandedRangeB = this.handRangeStringExpand(rangeBStr).split(',');
+            var expandedRangeA = this.handRangeStringExpand(rangeAStr).split(',');
+
+            for(var i=expandedRangeA.length-1; i>=0; i--){
+                var hand = expandedRangeA[i];
+                var index = expandedRangeB.indexOf(hand);
+                if(index != -1){
+                    expandedRangeA.splice(i,1);
+                }
+            }
+
+            var rangeAStr = expandedRangeA.join(',');
+            return rangeAStr;
         }
   });

@@ -25,6 +25,13 @@ describe('Service: HandRangeUtils', function () {
     });
 
     describe('parseHand', function () {
+        it('Empty with empty cards and undefined suitedness', function(){
+            var pair = HandRangeUtils.parseHand("");
+            expect(pair.card1).to.equal("");
+            expect(pair.card2).to.equal("");
+            expect(pair.suitedness).to.equal(undefined);
+        });
+
         it('Pocket pair has undefined suitedness', function() {
             var pair = HandRangeUtils.parseHand("AA");
             expect(pair.card1).to.equal("A");
@@ -62,6 +69,10 @@ describe('Service: HandRangeUtils', function () {
 
 
     describe('handRangeStringExpand', function () {
+        it('handle empty', function() {
+            expect(HandRangeUtils.handRangeStringExpand("")).to.equal("");
+        });
+
         it('hand range with the first hand the same expands horizontally', function() {
             expect(HandRangeUtils.handRangeStringExpand("AKs-A2s")).to.equal("AKs,AQs,AJs,ATs,A9s,A8s,A7s,A6s,A5s,A4s,A3s,A2s");
         });
@@ -128,6 +139,11 @@ describe('Service: HandRangeUtils', function () {
             expect(HandRangeUtils.handRangeStringCompress("Q5o,J5s,T5o")).to.equal("Q5o,J5s,T5o");
             expect(HandRangeUtils.handRangeStringCompress("Q9o,Q8s,Q7o")).to.equal("Q9o,Q8s,Q7o");
         });
+
+        it('Resolve vertical and horizontal streak overlapping', function(){
+            expect(HandRangeUtils.handRangeStringCompress('AKo,AKs,AQo,AQs,KQo,KQs,AJo,AJs,KJo,KJs,QJo,QJs,ATo,ATs,KTo,KTs,QTo,QTs,JTo,JTs,AA,KK,QQ,JJ,TT')).to.equal("AA-TT,AKo-ATo,KQo-KTo,QJo-QTo,AKs-ATs,KQs-KTs,QJs-QTs,JTo,JTs");
+        })
+
     });
 
     describe('sortPokerCards', function(){
@@ -145,7 +161,7 @@ describe('Service: HandRangeUtils', function () {
            expect(result.streaks[0]).to.eql(["K","Q","J"]);
            expect(result.streaks[1]).to.eql(["7","6","5"]);
         });
-    })
+    });
 
     describe('isInRange', function() {
         it('cards that are inside a range of hands', function(){
@@ -164,6 +180,12 @@ describe('Service: HandRangeUtils', function () {
             expect(HandRangeUtils.isInRange('J5o-75o','KQo')).to.be.false;
             expect(HandRangeUtils.isInRange('AJs-ATs,J5o-75o','K8s')).to.be.false;
         });
-    })
+    });
+
+    describe('findCompliment', function() {
+       it('Find only what is need to add without any additional overlap', function(){
+          expect(HandRangeUtils.findCompliment('AKo-ATo,KQo-KTo,QJo-QTo', 'ATo-JTo')).to.equal('JTo');
+       });
+    });
 
 });
