@@ -102,4 +102,68 @@ describe('Service: HandRangeUtils', function () {
             expect(handRangeStr).to.contain("AKo");
         });
     });
+
+    describe('handRangeStringCompress', function () {
+        it('Horizontal compression', function() {
+            expect(HandRangeUtils.handRangeStringCompress("AKs,AQs,AJs,ATs,A9s,A8s,A7s,A6s,A5s,A4s,A3s,A2s")).to.equal("AKs-A2s");
+        });
+
+        it('Vertical compression', function(){
+            expect(HandRangeUtils.handRangeStringCompress("A2s,K2s,Q2s,J2s,T2s,92s,82s,72s,62s,52s,42s,32s")).to.equal("A2s-32s");
+        });
+
+        it(('Pocket pair compression'), function() {
+            expect(HandRangeUtils.handRangeStringCompress("AA,QQ,KK,JJ,TT")).to.equal("AA-TT");
+            expect(HandRangeUtils.handRangeStringCompress("55,44,33")).to.equal("55-33");
+            expect(HandRangeUtils.handRangeStringCompress("AA,QQ,KK,JJ,TT,55,44,33")).to.equal("AA-TT,55-33");
+        });
+
+        it('mixture of various patterns compression', function(){
+            expect(HandRangeUtils.handRangeStringCompress("AKs,A2s,K2s,Q2s,J2s,T2s,92s,82s,72s,62s,52s,42s,32s")).to.equal("A2s-32s,AKs");
+            expect(HandRangeUtils.handRangeStringCompress("AKs,A2s,K2s,Q2s,J2s,T2s,92s,82s,72s,62s,52s,42s,32s,AA,QQ,KK,JJ,TT,55,44,33")).to.equal("AA-TT,55-33,A2s-32s,AKs");
+        });
+
+        it('Making sure suited and unsuited do not mix', function(){
+            expect(HandRangeUtils.handRangeStringCompress("Q4s,J4o,T4s")).to.equal("Q4s,J4o,T4s");
+            expect(HandRangeUtils.handRangeStringCompress("Q5o,J5s,T5o")).to.equal("Q5o,J5s,T5o");
+            expect(HandRangeUtils.handRangeStringCompress("Q9o,Q8s,Q7o")).to.equal("Q9o,Q8s,Q7o");
+        });
+    });
+
+    describe('sortPokerCards', function(){
+        it('determine which cards come before the other', function() {
+            expect(HandRangeUtils.sortPokerCards('A','K')).to.below(0);
+            expect(HandRangeUtils.sortPokerCards('T','9')).to.below(0);
+            expect(HandRangeUtils.sortPokerCards('9','T')).to.above(0);
+            expect(HandRangeUtils.sortPokerCards('T','T')).to.equal(0);
+        });
+    });
+
+    describe('getSingleCardStreaks', function() {
+        it('get single card streaks', function() {
+           var result = HandRangeUtils.getSingleCardStreaks(['K','Q','J','9','7','6','5','3']);
+           expect(result.streaks[0]).to.eql(["K","Q","J"]);
+           expect(result.streaks[1]).to.eql(["7","6","5"]);
+        });
+    })
+
+    describe('isInRange', function() {
+        it('cards that are inside a range of hands', function(){
+            expect(HandRangeUtils.isInRange('AKs-AJs','AQs')).to.be.true;
+            expect(HandRangeUtils.isInRange('AKo-AJo','AQo')).to.be.true;
+            expect(HandRangeUtils.isInRange('J5s-75s','95s')).to.be.true;
+            expect(HandRangeUtils.isInRange('J5o-75o','95o')).to.be.true;
+            expect(HandRangeUtils.isInRange('AJs-ATs,J5o-75o','95o')).to.be.true;
+        });
+
+        it('cards that are outside a range of hands', function(){
+            expect(HandRangeUtils.isInRange('AKs-AJs','A5s')).to.be.false;
+            expect(HandRangeUtils.isInRange('AKs-AJs','A5o')).to.be.false;
+            expect(HandRangeUtils.isInRange('AKo-AJo','A7o')).to.be.false;
+            expect(HandRangeUtils.isInRange('J5s-75s','KQs')).to.be.false;
+            expect(HandRangeUtils.isInRange('J5o-75o','KQo')).to.be.false;
+            expect(HandRangeUtils.isInRange('AJs-ATs,J5o-75o','K8s')).to.be.false;
+        });
+    })
+
 });
