@@ -29,6 +29,7 @@ angular.module('handDbApp')
         };
 
         $scope.rangeArrayChanged = function() {
+            $scope.$apply();
             var str = HandRangeUtils.handRangeToString($scope.handRange);
             $scope.handRangeStr = HandRangeUtils.handRangeStringCompress(str);
         };

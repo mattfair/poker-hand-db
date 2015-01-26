@@ -36,7 +36,7 @@ angular.module('handDbApp')
             $scope.toggle = function () {
                 $scope.active = $scope.active ? false : true;
                 updateColor($scope);
-                $scope.notifyChange($scope.name, $scope.enabled);
+                $scope.notifyChange();
             }
         }];
 

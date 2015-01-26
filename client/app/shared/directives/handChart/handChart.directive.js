@@ -5,8 +5,8 @@ angular.module('handDbApp')
 
         var controller = ['$scope', function ($scope) {
 
-
             $scope.rangeChanged = function(name) {
+                $scope.$apply();
                 $scope.callback();
             }
         }];
