@@ -2,7 +2,7 @@
 
 angular.module('handDbApp')
   .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope) {
-        $scope.ShowList = 0;
+        $scope.ShowList = 1;
         $scope.ShowRange = 0;
         $scope.position = '';
         $scope.handRangeStr = '';
@@ -16,12 +16,14 @@ angular.module('handDbApp')
             }
         });
 
-        $scope.toggleShowList = function() {
-            $scope.ShowList = $scope.ShowList === 1 ? 0 : 1;
+        $scope.showList = function() {
+            $scope.ShowList = 1;
+            $scope.ShowRange = 0;
         };
 
-        $scope.toggleShowRange = function() {
-            $scope.ShowRange = $scope.ShowRange === 1 ? 0 : 1;
+        $scope.showRange = function() {
+            $scope.ShowRange = 1;
+            $scope.ShowList = 0;
         };
 
         $scope.rangeStringChanged = function() {

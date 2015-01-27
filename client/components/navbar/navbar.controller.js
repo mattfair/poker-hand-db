@@ -2,10 +2,18 @@
 
 angular.module('handDbApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
+    $scope.menu = [
+
+    {
       'title': 'Home',
       'link': '/'
-    }];
+    },
+    {
+        'title': 'Preflop Hand Ranges',
+        'link': '/PreflopHandRange'
+    },
+
+    ];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;

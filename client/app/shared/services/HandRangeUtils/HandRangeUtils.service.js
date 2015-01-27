@@ -170,9 +170,7 @@ angular.module('handDbApp')
                     myHandsArray.push(hand);
                 }
             }
-            console.log(myHandsArray);
             myHandsArray.reverse();
-            console.log(myHandsArray);
             return myHandsArray.join(",");
         };
 
