@@ -47,5 +47,7 @@ describe('Controller: PreflopHandRangeCtrl', function () {
       scope.editingRangeStr=false;
       scope.$digest();
       expect(scope.handRange[22]).to.be.true;
-  })
+  });
+
+
 });
