@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('handDbApp')
-  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope, $http, socket, $location) {
+  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope, $http, socket, $location, $state) {
         $scope.ShowList = 1;
         $scope.ShowRange = 0;
         $scope.position = '';
@@ -27,11 +27,13 @@ angular.module('handDbApp')
                 active: true
             });
             $scope.handRangeStr = '';
-            this.showList();
         };
 
         $scope.deleteRange = function(id) {
             $http.delete('/api/PreflopOpeningRanges/' + id);
+
+            //refresh the state
+            $state.go($state.current, {}, {reload: true});
         };
 
         $scope.getRange = function(id) {
@@ -39,7 +41,6 @@ angular.module('handDbApp')
                 .then(function(result) {
                     $scope.handRangeStr = result.data.range;
                     $scope.position = result.data.position;
-                    $scope.currentId = result.data._id;
                     $scope.rangeStringChanged();
                 });
         }
@@ -48,16 +49,11 @@ angular.module('handDbApp')
             $http.patch('/api/PreflopOpeningRanges/'+id, {
                 range: $scope.handRangeStr
             });
-            $scope.showList();
         }
 
         $scope.editRange = function(id){
+            $state.go('^.edit', {id:id});
             $scope.getRange(id);
-            $scope.edit_mode = true;
-            $scope.new_mode = false;
-            var path = $location.path(); //Path without parameters
-            $location.url(path + '?id=' + id);
-            $scope.showRange();
         }
 
         $scope.$on('$destroy', function () {
@@ -78,11 +74,6 @@ angular.module('handDbApp')
             $location.url(path);
         };
 
-        $scope.showRange = function() {
-            $scope.ShowRange = 1;
-            $scope.ShowList = 0;
-        };
-
         $scope.rangeStringChanged = function() {
             $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
         };
@@ -93,10 +84,6 @@ angular.module('handDbApp')
         };
 
         $scope.createNewRange = function() {
-            $scope.edit_mode = false;
-            $scope.new_mode = true;
-            var path = $location.path(); //Path without parameters
-            $location.url(path + '?id=new');
-            $scope.showRange();
+            $state.go("^.new");
         }
 });

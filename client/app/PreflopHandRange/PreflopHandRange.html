@@ -2,68 +2,8 @@
 
 <div class="container">
     <article class="content">
-        <div ng-show="ShowList">
-            <header class="page-header">
-                <h2>Preflop Hands</h2>
-                <table class="table table-striped">
-                    <tr>
-                        <th>Position</th>
-                        <th>Game</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr ng-repeat="row in preflopHandRanges">
-                        <td>{{row.position}}</td>
-                        <td>{{row.game}}</td>
-                        <td><button class="btn" ng-click="editRange(row._id)">Edit</button>
-                            <button class="btn" ng-click="deleteRange(row._id)">Delete</button></td>
-                    </tr>
-                </table>
-                <button class="btn btn-primary" ng-click="createNewRange()">Add Range</button>
-            </header>
-        </div>
-
-        <div ng-show="ShowRange">
-            <header class="page-header">
-                <h2>{{position}} hand range</h2>
-            </header>
-
-                <table class="table hover">
-                   <tr>
-                       <td><hand-chart hand-range="handRange" callback="rangeArrayChanged()"></hand-chart></td>
-                       <td>
-                           <div class="list-group">
-                               <a href="#" class="list-group-item active">
-                                   Position
-                               </a>
-                               <a href="#" class="list-group-item" ng-click="position='UTG'">UTG</a>
-                               <a href="#" class="list-group-item" ng-click="position='UTG+1'">UTG+1</a>
-                               <a href="#" class="list-group-item" ng-click="position='MP'">MP</a>
-                               <a href="#" class="list-group-item" ng-click="position='MP+1'">MP+1</a>
-                               <a href="#" class="list-group-item" ng-click="position='MP+2'">MP+2</a>
-                               <a href="#" class="list-group-item" ng-click="position='CO'">CO</a>
-                               <a href="#" class="list-group-item" ng-click="position='Button'">Button</a>
-                               <a href="#" class="list-group-item" ng-click="position='SB'">SB</a>
-                               <a href="#" class="list-group-item" ng-click="position='BB'">BB</a>
-                           </div>
-
-                       </td>
-                   </tr>
-                </table>
-                <div class="col-xs-4">
-                    <input type="text" ng-model="handRangeStr" ng-focus="editingRangeStr=true" ng-blur="editingRangeStr=false"  class="form-control"/>
-                </div>
-            <br/>
-            <div ng-show="new_mode">
-                <button class="btn btn-primary" ng-click="addRange()">Save</button>
-            </div>
-            <div ng-show="edit_mode">
-                <button class="btn btn-primary" ng-click="saveRange(currentId)">Save</button>
-            </div>
-
-        </div>
+        <section ui-view></section>
     </article>
-
-
 </div>
 
 <footer class="footer">

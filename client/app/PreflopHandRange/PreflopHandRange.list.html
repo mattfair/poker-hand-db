@@ -1,0 +1,19 @@
+<header class="page-header">
+    <h2>Preflop Hands</h2>
+</header>
+
+<table class="table table-striped">
+    <tr>
+        <th>Position</th>
+        <th>Game</th>
+        <th>Action</th>
+    </tr>
+    <tr ng-repeat="row in preflopHandRanges">
+        <td>{{row.position}}</td>
+        <td>{{row.game}}</td>
+        <td><button class="btn" ng-click="editRange(row._id)">Edit</button>
+            <button class="btn" ng-click="deleteRange(row._id)">Delete</button></td>
+    </tr>
+</table>
+<button class="btn btn-primary" ng-click="createNewRange()">Add Range</button>
+
