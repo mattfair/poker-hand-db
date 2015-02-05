@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('handDbApp')
-  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope, $http, socket, $location, $state, $stateParams) {
+  .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope, $http, socket, $location, $state) {
         $scope.position = '';
         $scope.game = '';
         $scope.handRangeStr = '';

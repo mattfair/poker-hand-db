@@ -1,0 +1,20 @@
+<header class="page-header">
+    <h2>New Scenario</h2>
+</header>
+
+<table class="table table-striped">
+    <tr>
+        <th>Scenario</th>
+        <th>Action</th>
+    </tr>
+    <tr ng-repeat="row in scenarios">
+        <td>{{row.position}}</td>
+        <td>{{row.game}}</td>
+        <td>
+          <button class="btn" ng-click="addAction(row._id)">Add Action</button>
+          <button class="btn" ng-click="deleteScenario(row._id)">Delete</button>
+        </td>
+    </tr>
+</table>
+<button class="btn btn-primary" ng-click="createNewScenario()">New Scenario</button>
+

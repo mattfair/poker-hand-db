@@ -18,9 +18,9 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // Component styles are injected through grunt
 // injector
 @import 'PreflopHandRange/PreflopHandRange.scss';
+@import 'Scenario/Scenario.scss';
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
-@import 'main/main.scss';
 @import 'shared/directives/handButton/handButton.scss';
 @import 'shared/directives/handChart/handChart.scss';
 @import 'modal/modal.scss';
