@@ -24,7 +24,7 @@ angular.module('handDbApp')
      .state('PreflopHandRange.edit', {
             url: '/edit/:id',
             controller: function($scope, $stateParams){
-                $scope.getRange($stateParams.id);
+              $scope.getRange($stateParams.id);
             },
             templateUrl: 'app/PreflopHandRange/PreflopHandRange.edit.html'
      });

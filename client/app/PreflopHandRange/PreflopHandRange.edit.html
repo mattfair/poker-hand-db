@@ -1,6 +1,6 @@
 
 <header class="page-header">
-    <h2>{{position}} hand range</h2>
+    <h2>{{$parent.position}} hand range</h2>
 </header>
 
 <table class="table hover">
@@ -11,15 +11,15 @@
                 <a href="#" class="list-group-item active">
                     Position
                 </a>
-                <a href="#" class="list-group-item" ng-click="position='UTG'">UTG</a>
-                <a href="#" class="list-group-item" ng-click="position='UTG+1'">UTG+1</a>
-                <a href="#" class="list-group-item" ng-click="position='MP'">MP</a>
-                <a href="#" class="list-group-item" ng-click="position='MP+1'">MP+1</a>
-                <a href="#" class="list-group-item" ng-click="position='MP+2'">MP+2</a>
-                <a href="#" class="list-group-item" ng-click="position='CO'">CO</a>
-                <a href="#" class="list-group-item" ng-click="position='Button'">Button</a>
-                <a href="#" class="list-group-item" ng-click="position='SB'">SB</a>
-                <a href="#" class="list-group-item" ng-click="position='BB'">BB</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='UTG'">UTG</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='UTG+1'">UTG+1</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='MP'">MP</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='MP+1'">MP+1</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='MP+2'">MP+2</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='CO'">CO</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='Button'">Button</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='SB'">SB</a>
+                <a href="#" class="list-group-item" ng-click="$parent.position='BB'">BB</a>
             </div>
 
         </td>
@@ -29,5 +29,5 @@
     <input type="text" ng-model="handRangeStr" ng-focus="editingRangeStr=true" ng-blur="editingRangeStr=false"  class="form-control"/>
 </div>
 <br/>
-<button class="btn btn-primary" ng-click="saveRange($stateParams.id)">Save</button>
+<button class="btn btn-primary" ng-click="saveRange()">Save</button>
 

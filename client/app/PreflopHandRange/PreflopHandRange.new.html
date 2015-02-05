@@ -1,27 +1,22 @@
 <header class="page-header">
-    <h2>{{position}} hand range</h2>
+    <h2>{{position}} hand range in {{game}}</h2>
 </header>
 
-<table class="table hover">
+<table>
     <tr>
-        <td><hand-chart hand-range="handRange" callback="rangeArrayChanged()"></hand-chart></td>
         <td>
-            <div class="list-group">
-                <a href="#" class="list-group-item active">
-                    Position
-                </a>
-                <a href="#" class="list-group-item" ng-click="position='UTG'">UTG</a>
-                <a href="#" class="list-group-item" ng-click="position='UTG+1'">UTG+1</a>
-                <a href="#" class="list-group-item" ng-click="position='MP'">MP</a>
-                <a href="#" class="list-group-item" ng-click="position='MP+1'">MP+1</a>
-                <a href="#" class="list-group-item" ng-click="position='MP+2'">MP+2</a>
-                <a href="#" class="list-group-item" ng-click="position='CO'">CO</a>
-                <a href="#" class="list-group-item" ng-click="position='Button'">Button</a>
-                <a href="#" class="list-group-item" ng-click="position='SB'">SB</a>
-                <a href="#" class="list-group-item" ng-click="position='BB'">BB</a>
-            </div>
-
+          <select ng-model="$parent.game" ng-init="$parent.game = $parent.game || games[0]" class="form-control">
+            <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
+          </select>
         </td>
+        <td>
+          <select ng-init="$parent.position = $parent.position || seats[game][0]" ng-model="$parent.position" ng-options="o as o for o in seats[game]" class="form-control">
+          </select>
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="2"><hand-chart hand-range="handRange" callback="rangeArrayChanged()"></hand-chart></td>
     </tr>
 </table>
 <div class="col-xs-4">
