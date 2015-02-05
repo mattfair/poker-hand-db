@@ -12,8 +12,8 @@ angular.module('handDbApp')
                     $scope.currentTextColor = $scope.unselectedTextColor;
                 }
                 $scope.currentStyle = {
-                    height: "30px",
-                    width: "30px",
+                    height: "38px",
+                    width: "38px",
                     'background-color': $scope.currentColor,
                     'color': $scope.currentTextColor
                 };

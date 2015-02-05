@@ -10,7 +10,7 @@ angular.module('handDbApp')
         $scope.preflopHandRanges = [];
         $scope.games = ['9 Max', '6 Max'];
         $scope.seats = {
-          '9 Max': ['UTG', 'UTG+1','MP','MP+1','MP+2','CO','Button','SB','BB'],
+          '9 Max': ['UTG', 'UTG+1','UTG+2', 'MP','MP+1','CO','Button','SB','BB'],
           '6 Max': ['UTG', 'MP', 'CO','Button','SB','BB']
         };
 
