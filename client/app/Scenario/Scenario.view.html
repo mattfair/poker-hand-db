@@ -1,0 +1,41 @@
+<header class="page-header">
+  <h2>Scenario</h2>
+</header>
+
+Game:
+<select ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
+  <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
+</select>
+
+<table>
+  <tr>
+    <td>
+      <div ng-show="pickPosition">
+        <select ng-init="$parent.scenario.hero_seat = $parent.scenario.hero_seat || seats[game][0]" ng-model="$parent.scenario.hero_seat" ng-options="o as o for o in seats[$parent.scenario.game]" class="form-control">
+        </select>
+      </div>
+    </td>
+    <td>
+    </td>
+    <td>
+      <div ng-show="pickPosition">
+        <select ng-init="$parent.scenario.villain_seat = $parent.scenario.villain_seat || seats[game][0]" ng-model="$parent.scenario.villain_seat" ng-options="o as o for o in seats[$parent.scenario.game]" class="form-control">
+        </select>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <hand-chart hand-range="$parent.heroHandRange" callback="heroRangeArrayChanged()" editable="false"></hand-chart>
+      <input type="text" ng-model="$parent.heroHandRangeStr" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
+    </td>
+    <td>
+      <h1>Vs</h1>
+    </td>
+    <td>
+      <hand-chart hand-range="$parent.villainHandRange" callback="villainRangeArrayChanged()" editable="false"></hand-chart>
+      <input type="text" ng-model="$parent.villainHandRangeStr" ng-focus="$parent.editingVillianRangeStr=true" ng-blur="$parent.editingVillianRangeStr=false"  class="form-control"/>
+    </td>
+  </tr>
+</table>
+

@@ -2,7 +2,7 @@
 <header class="page-header">
     <h2>{{$parent.position}} hand range</h2>
 </header>
-<hand-chart hand-range="handRange" callback="rangeArrayChanged()"></hand-chart>
+<hand-chart hand-range="handRange" callback="rangeArrayChanged()"  editable="true"></hand-chart>
 
 <div class="col-xs-4">
     <input type="text" ng-model="$parent.handRangeStr" ng-focus="$parent.editingRangeStr=true" ng-blur="$parent.editingRangeStr=false"  class="form-control"/>
