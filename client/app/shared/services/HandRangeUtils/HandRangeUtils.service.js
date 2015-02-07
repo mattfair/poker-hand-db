@@ -2,6 +2,7 @@
 
 angular.module('handDbApp')
   .service('HandRangeUtils', function () {
+        var _ = window._;
         this.handRangeStringToMap = function (handRangeString) {
             var cards = '23456789TJQKA';
 
@@ -222,7 +223,7 @@ angular.module('handDbApp')
                                 currentStreak = [];
                             }
 
-                            if(window._.contains(currentStreak,cards[i]) == false){
+                            if(_.contains(currentStreak,cards[i]) == false){
                                 currentStreak.push(cards[i]);
                             }
                             currentStreak.push(cards[j]);
@@ -271,7 +272,7 @@ angular.module('handDbApp')
                         if(strk[sIndex].length > 1) {
 
                             var start = strk[sIndex][0];
-                            var end =  window._.last(strk[sIndex]);
+                            var end =  _.last(strk[sIndex]);
 
                             if(type == 0){
                                 var hand1 = start + start;
@@ -363,7 +364,7 @@ angular.module('handDbApp')
             var strk = vals.streaks;
             for(var i=0; i<strk.length; i++){
                 var start = strk[i][0];
-                var end = window._.last(strk[i]);
+                var end = _.last(strk[i]);
                 var range = start+start+"-"+end+end;
                 handRange.push(range);
             }
@@ -428,5 +429,115 @@ angular.module('handDbApp')
 
             var rangeAStr = expandedRangeA.join(',');
             return rangeAStr;
+        }
+
+        function factorial(n) {
+          return Array.apply(0, Array(n)).reduce(function(x, y, z) { return x + x * z; }, 1);
+        }
+
+        function choose(n, k){
+          if(k<=n){
+            return factorial(n)/(factorial(k)*factorial(n-k));
+          }
+
+          return 0;
+        }
+
+        /**
+         * convert a list of cards into pair combinations
+         * @param singleCards
+         */
+        this.createPairs = function(singleCards){
+          singleCards = singleCards.split(',');
+
+          var pairs = [];
+          for(var i=0; i<singleCards.length; i++){
+            for(var j=1; j<singleCards.length; j++){
+              if(i != j) {
+                var card1 = singleCards[i];
+                var card2 = singleCards[j];
+
+                var isBigger = this.sortPokerCards(card2[0], card1[0]) > 0;
+                var pair = isBigger ? card1 + card2 : card2 + card1;
+                if(_.contains(pairs,pair)==false){
+                  pairs.push(pair);
+                }
+              }
+            }
+          }
+
+          return pairs.join(",");
+        };
+
+        this.numHandCombos = function(handRange, deadCards) {
+          if(handRange == ""){
+            return 0;
+          }
+          if(deadCards == undefined){
+            deadCards = '';
+          }
+
+          var deadPairs = this.createPairs(deadCards).split(',');
+          var expandedRange = this.handRangeStringExpand(handRange).split(',');
+          deadCards = deadCards.split(',');
+
+
+          var numCombos = 0;
+          for(var i = 0; i < expandedRange.length; i++){
+            var parsedHand = this.parseHand(expandedRange[i]);
+
+            if(parsedHand.card1 == parsedHand.card2){
+
+              var matches = 0;
+              for(var j=0;j<deadCards.length;j++){
+                if(deadCards[j][0] == parsedHand.card1){
+                  matches++;
+                }
+              }
+
+              numCombos += choose(4-matches,2);
+            } else if(parsedHand.suitedness == 's'){
+
+              var matches = 0;
+              for(var j=0;j<deadCards.length;j++){
+                if(deadCards[j][0] == parsedHand.card1 || deadCards[j][0] == parsedHand.card2){
+                  matches++;
+                }
+              }
+
+              //remove duplicate pairs
+              for(var j=0;j<deadPairs.length; j++){
+                var pair = deadPairs[j];
+                if(pair[0] == parsedHand.card1 && pair[2] == parsedHand.card2 && pair[1] == pair[3]){
+                  matches--;
+                }
+              }
+
+
+              if(matches < 4) {
+                numCombos += choose(4 - matches, 4 - matches - 1);
+              }
+            } else if(parsedHand.suitedness == 'o'){
+              var matches = 0;
+              for(var j=0;j<deadCards.length;j++){
+                if(deadCards[j][0] == parsedHand.card1 || deadCards[j][0] == parsedHand.card2){
+                  matches+=3;
+                }
+              }
+
+              //remove duplicate pairs
+              for(var j=0;j<deadPairs.length; j++){
+                var pair = deadPairs[j];
+                if(pair[0] == parsedHand.card1 && pair[2] == parsedHand.card2 && pair[1] != pair[3]){
+                  matches--;
+                }
+              }
+
+
+              numCombos += 12 - matches;
+            }
+          }
+
+          return numCombos;
         }
   });

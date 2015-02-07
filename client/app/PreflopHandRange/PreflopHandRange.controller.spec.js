@@ -5,11 +5,15 @@ describe('Controller: PreflopHandRangeCtrl', function () {
 
   // load the controller's module
   beforeEach(module('handDbApp'));
+  beforeEach(module('socketMock'));
 
-  var PreflopHandRangeCtrl, scope;
+  var PreflopHandRangeCtrl, scope, $httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
+    $httpBackend = _$httpBackend_;
+    $httpBackend.expectGET('/api/PreflopOpeningRanges').respond({});
+
     scope = $rootScope.$new();
     PreflopHandRangeCtrl = $controller('PreflopHandRangeCtrl', {
       $scope: scope
@@ -27,6 +31,8 @@ describe('Controller: PreflopHandRangeCtrl', function () {
 
 
   it('when a card range is added to the range text field, it is selected in the card map', function(){
+
+
       scope.editingRangeStr=true;
       scope.handRangeStr = "22";
       scope.$digest();

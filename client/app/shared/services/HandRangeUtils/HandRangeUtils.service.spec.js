@@ -188,4 +188,48 @@ describe('Service: HandRangeUtils', function () {
        });
     });
 
+   describe('numHandCombos', function() {
+     it('Counts the number of hand combinations in a hand range', function(){
+       expect(HandRangeUtils.numHandCombos('AA')).to.equal(6);
+       expect(HandRangeUtils.numHandCombos('AKs')).to.equal(4);
+       expect(HandRangeUtils.numHandCombos('AKo')).to.equal(12);
+       expect(HandRangeUtils.numHandCombos('AKs,AKo')).to.equal(16);
+       expect(HandRangeUtils.numHandCombos('KK,AKs')).to.equal(10);
+       expect(HandRangeUtils.numHandCombos('KK,AKs,AQo')).to.equal(22);
+       expect(HandRangeUtils.numHandCombos('QQ-33,AKo-AQo,AQs-ATs,KQs-KTs,QJs-QTs,JTs-J9s,T9s,98s,87s,76s,65s,54s')).to.equal(148);
+       expect(HandRangeUtils.numHandCombos('AA-22,AKo-A7o,KQo-K9o,QJo-Q9o,JTo-J9o,T9o,98o,AKs-A2s,KQs-K2s,QJs-Q4s,JTs-J7s,T9s-T7s,98s-97s,87s-86s,76s-75s,65s-64s,54s')).to.equal(482);
+     });
+
+     it('Counts the number of hand combinations in a hand range with dead cards', function(){
+       expect(HandRangeUtils.numHandCombos('AA', 'Ah')).to.equal(3);
+       expect(HandRangeUtils.numHandCombos('AKs', 'Ah')).to.equal(3);
+       expect(HandRangeUtils.numHandCombos('AKs', 'Ah,Ac')).to.equal(2);
+       expect(HandRangeUtils.numHandCombos('AKs', 'Ah,Ac,As')).to.equal(1);
+       expect(HandRangeUtils.numHandCombos('AKs', 'Ah,Ac,As,Ad')).to.equal(0);
+       expect(HandRangeUtils.numHandCombos('AKo', 'Ah,Ac')).to.equal(6);
+       expect(HandRangeUtils.numHandCombos('AQs', 'Ah,Qh')).to.equal(3);
+       expect(HandRangeUtils.numHandCombos('AQs', 'Ah,Qc')).to.equal(2);
+       expect(HandRangeUtils.numHandCombos('AA,AKo,AKs-AQs', 'Ah,Ac')).to.equal(11);
+       expect(HandRangeUtils.numHandCombos('AA,AKo,AKs-AQs', 'Ah,Ac,Qc')).to.equal(11);
+       expect(HandRangeUtils.numHandCombos('AA,AKo,AKs-AQs', 'Ah,Ac,Qd')).to.equal(10);
+       expect(HandRangeUtils.numHandCombos('AA,AKo,AKs-AQs', 'Ah,Ac,Qc,Qd')).to.equal(10);
+       expect(HandRangeUtils.numHandCombos('QQ-33,AKo-AQo,AQs-ATs,KQs-KTs,QJs-QTs,JTs-J9s,T9s,98s,87s,76s,65s,54s','Ah,Ac')).to.equal(130);
+       expect(HandRangeUtils.numHandCombos('AA-22,AKo-A7o,KQo-K9o,QJo-Q9o,JTo-J9o,T9o,98o,AKs-A2s,KQs-K2s,QJs-Q4s,JTs-J7s,T9s-T7s,98s-97s,87s-86s,76s-75s,65s-64s,54s','Ah,Ac')).to.equal(411);
+       expect(HandRangeUtils.numHandCombos('AA-22,AKo-A7o,KQo-K9o,QJo-Q9o,JTo-J9o,T9o,98o,AKs-A2s,KQs-K2s,QJs-Q4s,JTs-J7s,T9s-T7s,98s-97s,87s-86s,76s-75s,65s-64s,54s','Ad,Kh,6c,Js,Td')).to.equal(362);
+       expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', 'Ah,Ac')).to.equal(109);
+       expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', 'Ah,Ac,Jc')).to.equal(103);
+       expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', 'Ah,Ac,Jc,Td,Qs')).to.equal(85);
+       expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', '8h,Jc,8d')).to.equal(128);
+     });
+   });
+
+  describe('createPairs', function() {
+    it('create hand combinations from a list of cards', function(){
+      expect(HandRangeUtils.createPairs('Ah,Qh')).to.equal("AhQh");
+      expect(HandRangeUtils.createPairs('Ah,Qh,Ad')).to.equal("AhQh,AdAh,AdQh")
+    });
+  });
+
+
+
 });

@@ -4,6 +4,7 @@ describe('Controller: ScenarioCtrl', function () {
 
   // load the controller's module
   beforeEach(module('handDbApp'));
+  beforeEach(module('socketMock'));
 
   var ScenarioCtrl, scope;
 
@@ -16,6 +17,6 @@ describe('Controller: ScenarioCtrl', function () {
   }));
 
   it('should ...', function () {
-    expect(1).toEqual(1);
+    //expect(1).toEqual(1);
   });
 });
