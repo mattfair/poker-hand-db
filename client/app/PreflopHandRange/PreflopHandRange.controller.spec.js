@@ -18,7 +18,7 @@ describe('Controller: PreflopHandRangeCtrl', function () {
     PreflopHandRangeCtrl = $controller('PreflopHandRangeCtrl', {
       $scope: scope
     });
-  }))
+  }));
 
   xit('when a card in the card map is true, it should show up in the range text', function () {
       scope.$apply(function() {scope.handRange["22"] = true;});

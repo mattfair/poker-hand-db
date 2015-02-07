@@ -187,7 +187,7 @@ angular.module('handDbApp')
             var aIndex = cardOrder.indexOf(a);
             var bIndex = cardOrder.indexOf(b);
             return aIndex - bIndex;
-        }
+        };
 
         /**
          * Returns an array of single card streaks in a string of cards
@@ -195,7 +195,7 @@ angular.module('handDbApp')
          */
         this.getSingleCardStreaks = function(cardsUnsorted){
             var streaks = [];
-            var currentStreak = []
+            var currentStreak = [];
             var other = [];
 
 
@@ -239,7 +239,7 @@ angular.module('handDbApp')
             }
 
             return {streaks: streaks, other:other};
-        }
+        };
 
 
         this.safeAddRange = function(handRangeArray, newRangeStr){
@@ -253,7 +253,7 @@ angular.module('handDbApp')
             }
 
             return handRangeArray;
-        }
+        };
         /**
          * Add to hand range
          * @param streaks compresses streaks
@@ -315,7 +315,7 @@ angular.module('handDbApp')
             }
 
             return handRange;
-        }
+        };
 
         this.handRangeStringCompress = function (handRangeString) {
 
@@ -329,16 +329,15 @@ angular.module('handDbApp')
 
             //un-suited
             for(var i=0; i<cards.length;  i++){
-                verticalStreaks[cards[i]+"o"] = new Array();
-                horizontalStreaks[cards[i]+"o"] = new Array();
-            };
-            //suited
+                verticalStreaks[cards[i]+"o"] = [];
+                horizontalStreaks[cards[i]+"o"] = [];
+            }
+          //suited
             for(var i=0; i<cards.length;  i++){
-                verticalStreaks[cards[i]+"s"] = new Array();
-                horizontalStreaks[cards[i]+"s"] = new Array();
-            };
-
-            var handArray = handRangeString.split(",");
+                verticalStreaks[cards[i]+"s"] = [];
+                horizontalStreaks[cards[i]+"s"] = [];
+            }
+          var handArray = handRangeString.split(",");
 
 
             //veretical/horizontql
@@ -404,7 +403,7 @@ angular.module('handDbApp')
                 }
             }
             return false;
-        }
+        };
 
         /**
          * Given two range strings, find a new range string that is A-B or A compliment B
@@ -429,7 +428,7 @@ angular.module('handDbApp')
 
             var rangeAStr = expandedRangeA.join(',');
             return rangeAStr;
-        }
+        };
 
         function factorial(n) {
           return Array.apply(0, Array(n)).reduce(function(x, y, z) { return x + x * z; }, 1);

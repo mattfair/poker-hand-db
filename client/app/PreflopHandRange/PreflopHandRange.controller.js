@@ -52,7 +52,7 @@ angular.module('handDbApp')
           $scope.game = result.data.game;
           $scope.rangeStringChanged();
         });
-    }
+    };
 
     $scope.saveRange = function() {
       $http.patch('/api/PreflopOpeningRanges/'+$scope.id, {
@@ -62,12 +62,12 @@ angular.module('handDbApp')
       }).then(function(){
         $state.go('^.list', {}, {reload: true});
       });
-    }
+    };
 
     $scope.editRange = function(id){
       $state.go('^.edit', {id:id});
       $scope.getRange(id);
-    }
+    };
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('preflophandranges');
