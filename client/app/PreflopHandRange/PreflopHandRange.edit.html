@@ -1,12 +1,12 @@
 
 <header class="page-header">
-    <h2>{{$parent.position}} hand range</h2>
+  <h2>{{$parent.position}} hand range</h2>
 </header>
 <hand-chart hand-range="handRange" callback="rangeArrayChanged()"  editable="true"></hand-chart>
 
-<div class="col-xs-4">
-    <input type="text" ng-model="$parent.handRangeStr" ng-focus="$parent.editingRangeStr=true" ng-blur="$parent.editingRangeStr=false"  class="form-control"/>
+<div class="col-xs-6">
+  <p align="center">{{numCombos}} combinations</p>
+  <input type="text" ng-model="$parent.handRangeStr" ng-focus="$parent.editingRangeStr=true" ng-blur="$parent.editingRangeStr=false"  class="form-control"/>
+  <button class="btn btn-primary" ng-click="saveRange()">Save</button>
 </div>
-<br/>
-<button class="btn btn-primary" ng-click="saveRange()">Save</button>
 

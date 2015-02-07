@@ -1,28 +1,29 @@
 <header class="page-header">
-    <h2>{{position}} hand range in {{game}}</h2>
+  <h2>{{position}} hand range in {{game}}</h2>
 </header>
 
 <table>
-    <tr>
-        <td>
-          <select ng-model="$parent.game" ng-init="$parent.game = $parent.game || games[0]" class="form-control">
-            <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
-          </select>
-        </td>
-        <td>
-          <select ng-init="$parent.position = $parent.position || seats[game][0]" ng-model="$parent.position" ng-options="o as o for o in seats[game]" class="form-control">
-          </select>
-        </td>
+  <tr>
+    <td>
+      <select ng-model="$parent.game" ng-init="$parent.game = $parent.game || games[0]" class="form-control">
+        <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
+      </select>
+    </td>
+    <td>
+      <select ng-init="$parent.position = $parent.position || seats[game][0]" ng-model="$parent.position" ng-options="o as o for o in seats[game]" class="form-control">
+      </select>
+    </td>
 
-    </tr>
-    <tr>
-        <td colspan="2"><hand-chart hand-range="handRange" callback="rangeArrayChanged()" editable="true"></hand-chart></td>
-    </tr>
+  </tr>
+  <tr>
+    <td colspan="2"><hand-chart hand-range="handRange" callback="rangeArrayChanged()" editable="true"></hand-chart></td>
+  </tr>
 </table>
-<div class="col-xs-4">
-    <input type="text" ng-model="$parent.handRangeStr" ng-focus="$parent.editingRangeStr=true" ng-blur="$parent.editingRangeStr=false"  class="form-control"/>
+<div class="col-xs-6">
+  <p align="center">{{numCombos}} combinations</p>
+  <input type="text" ng-model="$parent.handRangeStr" ng-focus="$parent.editingRangeStr=true" ng-blur="$parent.editingRangeStr=false"  class="form-control"/>
+  <button class="btn btn-primary" ng-click="addRange()">Save</button>
 </div>
 
 <br/>
 
-<button class="btn btn-primary" ng-click="addRange()">Save</button>

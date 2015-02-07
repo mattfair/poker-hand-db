@@ -2,99 +2,104 @@
 
 angular.module('handDbApp')
   .controller('PreflopHandRangeCtrl', function ($scope, HandRangeUtils, $rootScope, $http, socket, $location, $state) {
-        $scope.position = '';
-        $scope.game = '';
+    $scope.position = '';
+    $scope.game = '';
+    $scope.handRangeStr = '';
+    $scope.editingRangeStr = false;
+    $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
+    $scope.preflopHandRanges = [];
+    $scope.numCombos = 0;
+    $scope.games = ['9 Max', '6 Max'];
+    $scope.seats = {
+      '9 Max': ['UTG', 'UTG+1','UTG+2', 'MP','MP+1','CO','Button','SB','BB'],
+      '6 Max': ['UTG', 'MP', 'CO','Button','SB','BB']
+    };
+
+
+    $http.get('/api/PreflopOpeningRanges').success(function(preflopHandRanges) {
+      $scope.preflopHandRanges = preflopHandRanges;
+      socket.syncUpdates('preflophandranges', $scope.preflopHandRanges);
+    });
+
+    $scope.addRange = function() {
+      if($scope.handRangeStr === '') {
+        return;
+      }
+
+      $http.post('/api/PreflopOpeningRanges', {
+        position: $scope.position,
+        range: $scope.handRangeStr,
+        game: $scope.game,
+        active: true
+      }).then(function() {
         $scope.handRangeStr = '';
-        $scope.editingRangeStr = false;
-        $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
-        $scope.preflopHandRanges = [];
-        $scope.games = ['9 Max', '6 Max'];
-        $scope.seats = {
-          '9 Max': ['UTG', 'UTG+1','UTG+2', 'MP','MP+1','CO','Button','SB','BB'],
-          '6 Max': ['UTG', 'MP', 'CO','Button','SB','BB']
-        };
+        $state.go('^.list', {}, {reload: true});
+      });
+    };
 
-        $http.get('/api/PreflopOpeningRanges').success(function(preflopHandRanges) {
-            $scope.preflopHandRanges = preflopHandRanges;
-            socket.syncUpdates('preflophandranges', $scope.preflopHandRanges);
+    $scope.deleteRange = function(id) {
+      $http.delete('/api/PreflopOpeningRanges/' + id).then(function(){
+        $state.go($state.current, {}, {reload: true});
+      });
+    };
+
+    $scope.getRange = function(id) {
+      $scope.id = id;
+      $http.get('/api/PreflopOpeningRanges/' + id)
+        .then(function(result) {
+          $scope.handRangeStr = result.data.range;
+          $scope.position = result.data.position;
+          $scope.game = result.data.game;
+          $scope.rangeStringChanged();
         });
+    }
 
-        $scope.addRange = function() {
-            if($scope.handRangeStr === '') {
-                return;
-            }
+    $scope.saveRange = function() {
+      $http.patch('/api/PreflopOpeningRanges/'+$scope.id, {
+        position: $scope.position,
+        game: $scope.game,
+        range: $scope.handRangeStr
+      }).then(function(){
+        $state.go('^.list', {}, {reload: true});
+      });
+    }
 
-            $http.post('/api/PreflopOpeningRanges', {
-                position: $scope.position,
-                range: $scope.handRangeStr,
-                game: $scope.game,
-                active: true
-            }).then(function() {
-              $scope.handRangeStr = '';
-              $state.go('^.list', {}, {reload: true});
-            });
-        };
+    $scope.editRange = function(id){
+      $state.go('^.edit', {id:id});
+      $scope.getRange(id);
+    }
 
-        $scope.deleteRange = function(id) {
-            $http.delete('/api/PreflopOpeningRanges/' + id).then(function(){
-              $state.go($state.current, {}, {reload: true});
-            });
-        };
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('preflophandranges');
+    });
 
-        $scope.getRange = function(id) {
-          $scope.id = id;
-          $http.get('/api/PreflopOpeningRanges/' + id)
-            .then(function(result) {
-                $scope.handRangeStr = result.data.range;
-                $scope.position = result.data.position;
-                $scope.game = result.data.game;
-                $scope.rangeStringChanged();
-            });
-        }
+    $scope.$watch('editingRangeStr', function(newvalue, oldvalue){
+      if(oldvalue == true && newvalue == false){
+        $scope.rangeStringChanged();
+      }
+    });
 
-        $scope.saveRange = function() {
-            $http.patch('/api/PreflopOpeningRanges/'+$scope.id, {
-                position: $scope.position,
-                game: $scope.game,
-                range: $scope.handRangeStr
-            }).then(function(){
-              $state.go('^.list', {}, {reload: true});
-            });
-        }
+    $scope.showList = function() {
+      var path = $location.path(); //Path without parameters
+      $location.url(path);
+    };
 
-        $scope.editRange = function(id){
-            $state.go('^.edit', {id:id});
-            $scope.getRange(id);
-        }
+    $scope.rangeStringChanged = function() {
+      $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
+      $scope.numCombos = HandRangeUtils.numHandCombos($scope.handRangeStr);
+    };
 
-        $scope.$on('$destroy', function () {
-            socket.unsyncUpdates('preflophandranges');
-        });
+    $scope.rangeArrayChanged = function() {
+      var str = HandRangeUtils.handRangeToString($scope.handRange);
+      $scope.handRangeStr = HandRangeUtils.handRangeStringCompress(str);
+      $scope.numCombos = HandRangeUtils.numHandCombos($scope.handRangeStr);
+    };
 
-        $scope.$watch('editingRangeStr', function(newvalue, oldvalue){
-            if(oldvalue == true && newvalue == false){
-                $scope.rangeStringChanged();
-            }
-        });
-
-        $scope.showList = function() {
-            var path = $location.path(); //Path without parameters
-            $location.url(path);
-        };
-
-        $scope.rangeStringChanged = function() {
-            $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
-        };
-
-        $scope.rangeArrayChanged = function() {
-            var str = HandRangeUtils.handRangeToString($scope.handRange);
-            $scope.handRangeStr = HandRangeUtils.handRangeStringCompress(str);
-        };
-
-        $scope.createNewRange = function() {
-            $scope.handRangeStr = '';
-            $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
-            $scope.position = '';
-            $state.go("^.new");
-        }
-});
+    $scope.createNewRange = function() {
+      $scope.handRangeStr = '';
+      $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
+      $scope.position = '';
+      $scope.numCombos = 0;
+      $state.go("^.new");
+    }
+  });
