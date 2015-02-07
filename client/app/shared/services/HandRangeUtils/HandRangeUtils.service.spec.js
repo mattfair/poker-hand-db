@@ -16,14 +16,6 @@ describe('Service: HandRangeUtils', function () {
         HandRangeUtils = _HandRangeUtils_;
     }));
 
-    it('should do something', function () {
-        expect(!!HandRangeUtils).to.be.true;
-    });
-
-    it('should do something', function () {
-        expect(!!HandRangeUtils).to.be.true;
-    });
-
     describe('parseHand', function () {
         it('Empty with empty cards and undefined suitedness', function(){
             var pair = HandRangeUtils.parseHand("");
