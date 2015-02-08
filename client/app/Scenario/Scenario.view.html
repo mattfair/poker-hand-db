@@ -2,10 +2,12 @@
   <h2>Scenario</h2>
 </header>
 
-Game:
-<select ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
-  <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
-</select>
+<div ng-show="pickPosition">
+    Game:
+    <select ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
+      <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
+    </select>
+</div>
 
 <table>
   <tr>
@@ -25,8 +27,14 @@ Game:
     </td>
   </tr>
   <tr>
+    <td align="center"><b>Hero</b></td>
+    <td></td>
+    <td align="center"><b>Villain</b></td>
+  </tr>
+  <tr>
     <td>
       <hand-chart hand-range="$parent.heroHandRange" callback="heroRangeArrayChanged()" editable="false"></hand-chart>
+      <p align="center">{{numHeroCombos}} combinations</p>
       <input type="text" ng-model="$parent.heroHandRangeStr" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
     </td>
     <td>
@@ -34,11 +42,60 @@ Game:
     </td>
     <td>
       <hand-chart hand-range="$parent.villainHandRange" callback="villainRangeArrayChanged()" editable="false"></hand-chart>
+      <p align="center">{{numVillainCombos}} combinations</p>
       <input type="text" ng-model="$parent.villainHandRangeStr" ng-focus="$parent.editingVillianRangeStr=true" ng-blur="$parent.editingVillianRangeStr=false"  class="form-control"/>
     </td>
   </tr>
   <tr>
-
   </tr>
 </table>
+
+<form class="form-inline">
+  <div class="form-group">
+    <label for="TotalCombos">Total Combos</label>
+    <input disabled type="text" class="form-control" id="TotalCombos" ng-model="numHeroCombos" size="4" contenteditable="false">
+  </div>
+  <label>X</label>
+  <div class="form-group">
+    <label for="DefendRate">Defending Rate</label>
+    <input type="text" class="form-control" id="DefendRate"  size="4"  ng-model="scenario.defendRate">
+  </div>
+  <label>=</label>
+
+  <div class="form-group">
+    <label for="DesiredNumHandsDefend">Desired Number hands to defending</label>
+    <input disabled type="text" class="form-control" id="DesiredNumHandsDefend"  size="4"  ng-model="Math.floor(numHeroCombos*scenario.defendRate)" contenteditable="false">
+  </div>
+</form>
+
+<div class="form-group">
+  <label for="board">Board</label>
+  <board id="board" values="scenario.board"/>
+</div>
+
+<div class="form-group col-xs-6">
+  <label for="valueRaise">Value Raise</label>
+  <hand-chart id="valueRaise" hand-range="$parent.valueRaise" callback="valueRaiseRangeArrayChanged()" editable="false"></hand-chart>
+  <p align="center">{{numValueRaiseCombos}} combinations</p>
+  <input type="text" ng-model="$parent.valueRaiseHandRangeStr" ng-focus="$parent.editingValueRaiseRangeStr=true" ng-blur="$parent.editingValueRaiseRangeStr=false"  class="form-control"/>
+</div>
+
+<div class="form-group col-xs-6">
+  <label for="bluffRaise">Bluff Raise</label>
+  <hand-chart id="bluffRaise" hand-range="$parent.bluffRaise" callback="bluffRaiseRangeArrayChanged()" editable="false"></hand-chart>
+  <p align="center">{{numBluffRaiseCombos}} combinations</p>
+  <input type="text" ng-model="$parent.bluffRaiseHandRangeStr" ng-focus="$parent.editingBluffRaiseRangeStr=true" ng-blur="$parent.editingBluffRaiseRangeStr=false"  class="form-control"/>
+</div>
+
+<div class="form-group col-xs-6">
+  <label for="call">Bluff Raise</label>
+  <hand-chart id="call" hand-range="$parent.call" callback="callRangeArrayChanged()" editable="false"></hand-chart>
+  <p align="center">{{numBluffRaiseCombos}} combinations</p>
+  <input type="text" ng-model="$parent.callHandRangeStr" ng-focus="$parent.editingCallRangeStr=true" ng-blur="$parent.editingCallRangeStr=false"  class="form-control"/>
+</div>
+
+<div class="form-group">
+  <label for="notes">Notes Board</label>
+  <textarea class="form-control" rows="3" ng-model="scenario.notes" id="notes" placeholder="Notes about current scenario to remember"></textarea>
+</div>
 

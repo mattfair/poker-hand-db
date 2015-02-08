@@ -3,17 +3,20 @@
 angular.module('handDbApp')
   .controller('ScenarioCtrl', function ($scope, $http, socket, $state, HandRangeUtils) {
     $scope.scenario = {
-      parent: String,
-      game: String,
-      hero_seat: String,
-      villain_seat: String,
-      actiontohero: String,
-      board: String,
-      valueBet: String,
-      bluffBet: String,
-      call: String,
-      notes: String
+      parent: '',
+      game: '',
+      hero_seat: '',
+      villain_seat: '',
+      defendRate: 0.6,
+      actiontohero: '',
+      board: '',
+      valueBet: '',
+      bluffBet: '',
+      call: '',
+      notes:''
     };
+
+    $scope.Math=Math;
 
     $scope.editingHeroRangeStr = false;
     $scope.editingVillainRangeStr = false;
@@ -24,6 +27,12 @@ angular.module('handDbApp')
 
     $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
     $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
+
+    $scope.numHeroCombos = 0;
+    $scope.numVillainCombos = 0;
+    $scope.numValueRaiseCombos = 0;
+    $scope.numBluffRaiseCombos = 0;
+    $scope.numCallCombos = 0;
 
     $scope.pickPosition = false;
     $scope.games = ['9 Max', '6 Max'];
@@ -75,19 +84,23 @@ angular.module('handDbApp')
     });
     $scope.heroRangeStringChanged = function() {
       $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
     };
 
     $scope.villainRangeStringChanged = function() {
       $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.villainHandRangeStr);
+      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.villainHandRangeStr, $scope.scenario.board);
     };
 
     $scope.heroRangeArrayChanged = function() {
       var str = HandRangeUtils.handRangeToString($scope.heroHandRange);
       $scope.heroHandRangeStr = HandRangeUtils.handRangeStringCompress(str);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
     };
 
     $scope.villainRangeArrayChanged = function() {
       var str = HandRangeUtils.handRangeToString($scope.villainHandRange);
       $scope.villainHandRangeStr = HandRangeUtils.handRangeStringCompress(str);
+      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.villainHandRangeStr, $scope.scenario.board);
     };
   });
