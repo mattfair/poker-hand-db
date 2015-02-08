@@ -10,7 +10,7 @@ angular.module('handDbApp')
       }
 
       $scope.updateBoard = function(){
-        var boardCards = $scope.values.split(',');
+        var boardCards = $scope.values.toUpperCase().split(',');
 
         //turn over all cards
         $scope.flop_card1 = 'assets/images/cards/Red_Back.svg';
