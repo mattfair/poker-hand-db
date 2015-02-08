@@ -17,6 +17,7 @@ angular.module('handDbApp')
     };
 
     $scope.Math=Math;
+    $scope.preflopHandRanges = [];
 
     $scope.editingHeroRangeStr = false;
     $scope.editingVillainRangeStr = false;
@@ -49,6 +50,11 @@ angular.module('handDbApp')
       {name:'Bluff Bet', source:$scope.scenario.parent.bluffBet},
       {name:'Call', source:$scope.scenario.parent.call}];
 
+    $http.get('/api/PreflopOpeningRanges').success(function(preflopHandRanges) {
+      $scope.preflopHandRanges = preflopHandRanges;
+      socket.syncUpdates('preflophandranges', $scope.preflopHandRanges);
+    });
+
     $http.get('/api/Scenarios').success(function(scenarios) {
       $scope.scenarios = scenarios;
       socket.syncUpdates('scenarios', $scope.scenarios);
@@ -56,8 +62,30 @@ angular.module('handDbApp')
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('scenarios');
+      socket.unsyncUpdates('preflophandranges');
     });
 
+    $scope.$watch('scenario.hero_seat', function(newvalue, oldvalue) {
+      for(var i=0; i<$scope.preflopHandRanges.length; i++){
+        var handRange = $scope.preflopHandRanges[i];
+        if(handRange.game == $scope.scenario.game && handRange.position == newvalue){
+          $scope.heroHandRangeStr = handRange.range;
+          $scope.heroRangeStringChanged();
+          break;
+        }
+      }
+    });
+
+    $scope.$watch('scenario.villain_seat', function(newvalue, oldvalue) {
+      for(var i=0; i<$scope.preflopHandRanges.length; i++){
+        var handRange = $scope.preflopHandRanges[i];
+        if(handRange.game == $scope.scenario.game && handRange.position == newvalue){
+          $scope.villainHandRangeStr = handRange.range;
+          $scope.villainRangeStringChanged();
+          break;
+        }
+      }
+    });
 
     $scope.$watch('numHeroCombos', function(newvalue, oldvalue) {
       $scope.updateDesiredNumHandsDefended();

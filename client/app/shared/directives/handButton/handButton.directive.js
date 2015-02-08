@@ -47,7 +47,7 @@ angular.module('handDbApp')
             }
         }];
 
-        var template = '<button ng-style="currentStyle" ng-click="toggle()" ng-disabled="editable==false||editable==\"false\"">{{value}}</button>';
+        var template = '<button ng-style="currentStyle" ng-click="toggle()" ng-disabled="editable==false">{{value}}</button>';
 
         //Disable clicking for when the button is set to disabled
         var link = function (scope, element, attrs) {

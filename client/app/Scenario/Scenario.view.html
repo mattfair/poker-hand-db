@@ -35,7 +35,7 @@
     <td>
       <hand-chart hand-range="$parent.heroHandRange" callback="heroRangeArrayChanged()" editable=false></hand-chart>
       <p align="center">{{numHeroCombos}} combinations</p>
-      <input type="text" ng-model="$parent.heroHandRangeStr" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
+      <input disabled type="text" ng-model="$parent.heroHandRangeStr" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
     </td>
     <td>
       <h1>Vs</h1>
@@ -43,7 +43,7 @@
     <td>
       <hand-chart hand-range="$parent.villainHandRange" callback="villainRangeArrayChanged()" editable="false"></hand-chart>
       <p align="center">{{numVillainCombos}} combinations</p>
-      <input type="text" ng-model="$parent.villainHandRangeStr" ng-focus="$parent.editingVillianRangeStr=true" ng-blur="$parent.editingVillianRangeStr=false"  class="form-control"/>
+      <input disabled type="text" ng-model="$parent.villainHandRangeStr" ng-focus="$parent.editingVillianRangeStr=true" ng-blur="$parent.editingVillianRangeStr=false"  class="form-control"/>
     </td>
   </tr>
   <tr>
