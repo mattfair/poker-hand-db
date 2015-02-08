@@ -50,10 +50,16 @@
   </tr>
 </table>
 
+
+<div class="form-group">
+  <label for="board">Board</label>
+  <board id="board" values="scenario.board" on-board-change="$parent.boardChanged()"></board>
+</div>
+
 <form class="form-inline">
   <div class="form-group">
     <label for="TotalCombos">Total Combos</label>
-    <input disabled type="text" class="form-control" id="TotalCombos" ng-model="numHeroCombos" size="4" contenteditable="false">
+    <input disabled type="text" class="form-control" id="TotalCombos" ng-model="totalCombos" size="4" contenteditable="false">
   </div>
   <label>X</label>
   <div class="form-group">
@@ -67,13 +73,6 @@
     <input disabled type="text" class="form-control" id="DesiredNumHandsDefend"  size="4"  ng-model="desiredNumHandsDefended" contenteditable="false">
   </div>
 </form>
-
-<div class="form-group">
-  <label for="board">Board</label>
-  <board id="board" values="scenario.board"/>
-</div>
-
-
 
 <div class="form-group">
   <form class="form-inline">

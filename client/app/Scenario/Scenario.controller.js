@@ -67,9 +67,12 @@ angular.module('handDbApp')
     });
 
     $scope.updateDesiredNumHandsDefended = function() {
-      $scope.desiredNumHandsDefended=Math.floor($scope.numHeroCombos*$scope.scenario.defendRate);
+      $scope.desiredNumHandsDefended=Math.floor($scope.totalCombos*$scope.scenario.defendRate);
     }
 
+    $scope.boardChanged = function() {
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
+    }
 
     $scope.createNewScenario = function (){
       $state.go("^.new");
@@ -100,7 +103,8 @@ angular.module('handDbApp')
     });
     $scope.heroRangeStringChanged = function() {
       $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
-      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.parent.board);
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
     };
 
     $scope.villainRangeStringChanged = function() {
@@ -111,7 +115,8 @@ angular.module('handDbApp')
     $scope.heroRangeArrayChanged = function() {
       var str = HandRangeUtils.handRangeToString($scope.heroHandRange);
       $scope.heroHandRangeStr = HandRangeUtils.handRangeStringCompress(str);
-      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.parent.board);
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
     };
 
     $scope.villainRangeArrayChanged = function() {

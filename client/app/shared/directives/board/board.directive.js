@@ -40,6 +40,7 @@ angular.module('handDbApp')
             }
           }
         }
+        $scope.onBoardChange();
       }
 
       $scope.updateBoard();
@@ -49,7 +50,8 @@ angular.module('handDbApp')
       templateUrl: 'app/shared/directives/board/board.html',
       restrict: 'EA',
       scope: {
-        values: '=' //@ reads the attribute value, = provides two-way binding, & works with functions
+        values: '=', //@ reads the attribute value, = provides two-way binding, & works with functions
+        onBoardChange: '&'
       },
       controller: controller
     };

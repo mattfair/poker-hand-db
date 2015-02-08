@@ -49,9 +49,7 @@ angular.module('handDbApp')
 
         modalInstance.result.then(function (handRangeStr) {
           $scope.handRange = handRangeStr;
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });
+        }, function () {});
       }
     }];
     var template = '<button class="popupHandTableButton" ng-click="show()"></button>';
