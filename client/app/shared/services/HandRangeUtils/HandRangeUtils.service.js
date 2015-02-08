@@ -476,6 +476,7 @@ angular.module('handDbApp')
             deadCards = '';
           }
 
+          deadCards = deadCards.toUpperCase();
           var deadPairs = this.createPairs(deadCards).split(',');
           var expandedRange = this.handRangeStringExpand(handRange).split(',');
           deadCards = deadCards.split(',');

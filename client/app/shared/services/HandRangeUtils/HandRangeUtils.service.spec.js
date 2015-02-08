@@ -194,6 +194,7 @@ describe('Service: HandRangeUtils', function () {
 
      it('Counts the number of hand combinations in a hand range with dead cards', function(){
        expect(HandRangeUtils.numHandCombos('AA', 'Ah')).to.equal(3);
+       expect(HandRangeUtils.numHandCombos('AA', 'ah')).to.equal(3);
        expect(HandRangeUtils.numHandCombos('AKs', 'Ah')).to.equal(3);
        expect(HandRangeUtils.numHandCombos('AKs', 'Ah,Ac')).to.equal(2);
        expect(HandRangeUtils.numHandCombos('AKs', 'Ah,Ac,As')).to.equal(1);
@@ -212,6 +213,7 @@ describe('Service: HandRangeUtils', function () {
        expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', 'Ah,Ac,Jc')).to.equal(103);
        expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', 'Ah,Ac,Jc,Td,Qs')).to.equal(85);
        expect(HandRangeUtils.numHandCombos('AA-88,AKo-AQo,KQo,AKs-A9s,A5s-A3s,KQs-KTs,QJs-QTs,JTs,87s,76s', '8h,Jc,8d')).to.equal(128);
+       expect(HandRangeUtils.numHandCombos('AA-QQ,33-22,AKo-AQo,AKs-AQs,43s-42s,KQo,KQs,52s,32s', 'ah,qh,2d')).to.equal(67);
      });
    });
 
