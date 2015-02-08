@@ -34,6 +34,9 @@ angular.module('handDbApp')
     $scope.numBluffRaiseCombos = 0;
     $scope.numCallCombos = 0;
 
+    $scope.totalNumHandsDefended = 30;
+    $scope.desiredNumHandsDefended = 0;
+
     $scope.pickPosition = false;
     $scope.games = ['9 Max', '6 Max'];
     $scope.seats = {
@@ -54,6 +57,19 @@ angular.module('handDbApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('scenarios');
     });
+
+
+    $scope.$watch('numHeroCombos', function(newvalue, oldvalue) {
+      $scope.updateDesiredNumHandsDefended();
+    });
+    $scope.$watch('scenario.defendRate', function(newvalue, oldvalue) {
+      $scope.updateDesiredNumHandsDefended();
+    });
+
+    $scope.updateDesiredNumHandsDefended = function() {
+      $scope.desiredNumHandsDefended=Math.floor($scope.numHeroCombos*$scope.scenario.defendRate);
+    }
+
 
     $scope.createNewScenario = function (){
       $state.go("^.new");
