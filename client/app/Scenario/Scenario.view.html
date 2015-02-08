@@ -79,6 +79,7 @@
       <label for="valueRaise">Value Raise</label>
       <input type="text" ng-model="$parent.scenario.valueBet" size="75%" class="form-control"/>
       <popup-hand-table id="valueRaise" hand-range="$parent.scenario.valueBet"></popup-hand-table>
+      <label> {{numValueBetCombos}} Combos</label>
   </form>
 </div>
 
@@ -87,6 +88,7 @@
       <label for="bluffRaise">Bluff Raise</label>
       <input type="text" ng-model="$parent.scenario.bluffBet" size="75%" class="form-control"/>
       <popup-hand-table id="bluffRaise" hand-range="$parent.scenario.bluffBet"></popup-hand-table>
+      <label> {{numBluffBetCombos}} Combos</label>
   </form>
 </div>
 
@@ -95,6 +97,7 @@
       <label for="call">Call</label>
       <input type="text" ng-model="$parent.scenario.call" size="75%" class="form-control"/>
       <popup-hand-table id="call" hand-range="$parent.scenario.call"></popup-hand-table>
+      <label> {{numCallCombos}} Combos</label>
   </form>
 </div>
 

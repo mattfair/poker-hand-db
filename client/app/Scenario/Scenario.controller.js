@@ -30,11 +30,11 @@ angular.module('handDbApp')
 
     $scope.numHeroCombos = 0;
     $scope.numVillainCombos = 0;
-    $scope.numValueRaiseCombos = 0;
-    $scope.numBluffRaiseCombos = 0;
+    $scope.numValueBetCombos = 0;
+    $scope.numBluffBetCombos = 0;
     $scope.numCallCombos = 0;
 
-    $scope.totalNumHandsDefended = 30;
+    $scope.totalNumHandsDefended = 0;
     $scope.desiredNumHandsDefended = 0;
 
     $scope.pickPosition = false;
@@ -64,6 +64,18 @@ angular.module('handDbApp')
     });
     $scope.$watch('scenario.defendRate', function(newvalue, oldvalue) {
       $scope.updateDesiredNumHandsDefended();
+    });
+    $scope.$watch('scenario.valueBet', function(newvalue, oldvalue) {
+      $scope.numValueBetCombos = HandRangeUtils.numHandCombos($scope.scenario.valueBet,$scope.scenario.board);
+      $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
+    });
+    $scope.$watch('scenario.bluffBet', function(newvalue, oldvalue) {
+      $scope.numBluffBetCombos = HandRangeUtils.numHandCombos($scope.scenario.bluffBet,$scope.scenario.board);
+      $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
+    });
+    $scope.$watch('scenario.call', function(newvalue, oldvalue) {
+      $scope.numCallCombos = HandRangeUtils.numHandCombos($scope.scenario.call,$scope.scenario.board);
+      $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
     });
 
     $scope.updateDesiredNumHandsDefended = function() {
