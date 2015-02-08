@@ -224,6 +224,17 @@ describe('Service: HandRangeUtils', function () {
     });
   });
 
+  describe('notInRangeArray', function(){
+    it('compute the negated map from a range string', function(){
+      var map = HandRangeUtils.notInRangeArray('AA,KK,QQ,76s');
+      expect(map['AA']).to.be.false;
+      expect(map['KK']).to.be.false;
+      expect(map['QQ']).to.be.false;
+      expect(map['76s']).to.be.false;
+      expect(map['AKs']).to.be.true;
+    });
+  })
+
 
 
 });

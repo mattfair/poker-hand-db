@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: popupHandTable', function () {
+describe('Directive: popupHandChart', function () {
 
   // load the directive's module
   beforeEach(module('handDbApp'));
@@ -15,6 +15,6 @@ describe('Directive: popupHandTable', function () {
   it('should make hidden element visible', inject(function ($compile) {
     element = angular.element('<popup-hand-table></popup-hand-table>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the popupHandTable directive');
+    expect(element.text()).toBe('this is the popupHandChart directive');
   }));
 });

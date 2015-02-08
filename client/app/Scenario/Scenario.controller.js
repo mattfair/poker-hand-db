@@ -28,6 +28,7 @@ angular.module('handDbApp')
 
     $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
     $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
+    $scope.heroNotInRange = HandRangeUtils.handRangeMapNegate($scope.heroHandRange);
 
     $scope.numHeroCombos = 0;
     $scope.numVillainCombos = 0;
@@ -74,6 +75,7 @@ angular.module('handDbApp')
           break;
         }
       }
+      $scope.heroNotInRange = HandRangeUtils.handRangeMapNegate($scope.heroHandRange);
     });
 
     $scope.$watch('scenario.villain_seat', function(newvalue, oldvalue) {

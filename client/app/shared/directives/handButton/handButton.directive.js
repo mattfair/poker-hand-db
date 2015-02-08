@@ -3,13 +3,18 @@
 angular.module('handDbApp')
   .directive('handButton', function () {
         var controller = ['$scope', function ($scope) {
-            function updateColor($scope) {
-                if ($scope.active) {
+            $scope.updateColor = function() {
+                if($scope.disabled == false || $scope.disabled == undefined) {
+                  if ($scope.active) {
                     $scope.currentColor = $scope.selectedColor;
                     $scope.currentTextColor = $scope.selectedTextColor;
-                } else {
+                  } else {
                     $scope.currentColor = $scope.unselectedColor;
                     $scope.currentTextColor = $scope.unselectedTextColor;
+                  }
+                } else {
+                  $scope.currentColor = "gray";
+                  $scope.currentTextColor = $scope.unselectedTextColor;
                 }
                 $scope.currentStyle = {
                     height: "38px",
@@ -17,6 +22,7 @@ angular.module('handDbApp')
                     'background-color': $scope.currentColor,
                     'color': $scope.currentTextColor
                 };
+
             }
 
             function init() {
@@ -24,10 +30,14 @@ angular.module('handDbApp')
                     $scope.active = false;
                 }
 
-                updateColor($scope);
+                $scope.updateColor();
 
-                $scope.$watch('active', function (value) {
-                    updateColor($scope);
+                $scope.$watch('active', function () {
+                    $scope.updateColor();
+                });
+
+                $scope.$watch('disabled', function(){
+                  $scope.updateColor();
                 });
             }
 
@@ -35,7 +45,7 @@ angular.module('handDbApp')
 
             $scope.toggle = function () {
                 $scope.active = $scope.active ? false : true;
-                updateColor($scope);
+                $scope.updateColor();
 
                 try {
                     $scope.$apply();
@@ -51,7 +61,7 @@ angular.module('handDbApp')
 
         //Disable clicking for when the button is set to disabled
         var link = function (scope, element, attrs) {
-            scope.$watch(scope.editable, function (value) {
+            scope.$watch(scope.editable, function () {
 
                 if (scope.editable == false || scope.editable == "false" || scope.editable == undefined) {
                     element.attr("disabled", "disabled");
@@ -73,8 +83,9 @@ angular.module('handDbApp')
                 selectedTextColor: '@', //Text color when button is selected
                 unselectedColor: '@', //Color when button is unselected
                 unselectedTextColor: '@', //Text color when button is unselecte
-                active: '=',
-                editable: '@'
+                active: '=', //true when the button is selected
+                editable: '@', //when true, the button can be presses
+                disabled: '=' //when true, the button is grayed out
             },
             controller: controller,
             template: template,

@@ -17,7 +17,8 @@ angular.module('handDbApp')
         scope: {
             handRange: '=', //@ reads the attribute value, = provides two-way binding, & works with functions
             callback: '&',
-            editable: '@'
+            editable: '@',
+            notInRange: '='
         },
         controller: controller
     };

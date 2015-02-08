@@ -38,7 +38,7 @@ angular.module('handDbApp')
     var controller = ['$scope', function ($scope) {
       $scope.show = function() {
         var modalInstance = $modal.open({
-          templateUrl: 'app/shared/directives/popupHandTable/popupHandTable.html',
+          templateUrl: 'app/shared/directives/popupHandChart/popupHandChart.html',
           controller: 'PopupHandTableCtrl',
           resolve: {
             handRangeStr: function () {
@@ -57,7 +57,8 @@ angular.module('handDbApp')
       restrict: 'EA',
       template: template,
       scope: {
-        handRange: '=' //@ reads the attribute value, = provides two-way binding, & works with functions
+        handRange: '=', //@ reads the attribute value, = provides two-way binding, & works with functions
+        notInRange: '='
       },
       controller: controller
     };

@@ -32,6 +32,27 @@ angular.module('handDbApp')
             return hands;
         };
 
+        this.handRangeMapNegate = function(handRangeMap){
+          var retMap = {};
+
+          for (var key in handRangeMap) {
+            if (handRangeMap.hasOwnProperty(key)) {
+              retMap[key] = handRangeMap[key] == true ? false : true;
+            }
+          }
+
+          return retMap;
+        };
+
+        /**
+         * Calculate not in range array from in range string
+         * @param inRangeStr
+         */
+        this.notInRangeArray = function(inRangeStr) {
+          var inRangeMap = this.handRangeStringToMap(inRangeStr);
+          return this.handRangeMapNegate(inRangeMap);
+        }
+
         this.handRangeStringExpand = function (handRangeString) {
             var hands = handRangeString.split(",");
             var myExpandedRange = [];

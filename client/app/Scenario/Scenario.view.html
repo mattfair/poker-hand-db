@@ -78,7 +78,7 @@
   <form class="form-inline">
       <label for="valueRaise">Value Raise</label>
       <input type="text" ng-model="$parent.scenario.valueBet" size="75%" class="form-control"/>
-      <popup-hand-table id="valueRaise" hand-range="$parent.scenario.valueBet"></popup-hand-table>
+      <popup-hand-table id="valueRaise" hand-range="$parent.scenario.valueBet" not-in-range="$parent.heroNotInRange"></popup-hand-table>
       <label> {{numValueBetCombos}} Combos</label>
   </form>
 </div>
