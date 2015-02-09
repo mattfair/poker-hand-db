@@ -67,13 +67,16 @@ angular.module('handDbApp')
     });
 
     $scope.updateNotInRange = function() {
-      var allRangesButValueRaise = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.bluffBet, $scope.scenario.call].join(','));
+      var allRangesButValueRaise = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.bluffBet, $scope.scenario.call].join(','));
+      allRangesButValueRaise = HandRangeUtils.handRangeStringCompress(allRangesButValueRaise);
       $scope.heroNotInRangeAndBluffCall = HandRangeUtils.notInRangeArray(allRangesButValueRaise);
 
-      var allRangesButBluffRaise = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.valueBet, $scope.scenario.call].join(','));
+      var allRangesButBluffRaise = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.valueBet, $scope.scenario.call].join(','));
+      allRangesButBluffRaise = HandRangeUtils.handRangeStringCompress(allRangesButBluffRaise);
       $scope.heroNotInRangeAndRaiseCall = HandRangeUtils.notInRangeArray(allRangesButBluffRaise);
 
-      var allRangesButCall = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.valueBet, $scope.scenario.bluffBet].join(','));
+      var allRangesButCall = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.valueBet, $scope.scenario.bluffBet].join(','));
+      allRangesButCall = HandRangeUtils.handRangeStringCompress(allRangesButCall);
       $scope.heroNotInRangeAndRaiseBluff = HandRangeUtils.notInRangeArray(allRangesButCall);
     }
 

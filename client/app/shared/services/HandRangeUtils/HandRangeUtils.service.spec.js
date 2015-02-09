@@ -237,7 +237,13 @@ describe('Service: HandRangeUtils', function () {
       expect(map['76s']).to.be.false;
       expect(map['AKs']).to.be.true;
     });
-  })
+  });
+
+  describe('subtractFromRange', function(){
+    it('subtract hand combinations from range', function(){
+      expect(HandRangeUtils.subtractFromRange('AA-66,AKo-AJo,KQo-KJo,AKs-A2s,KQs-K9s,QJs-QTs,JTs,T9s','AA-KK,AKo,AKs,KQs')).to.equal('QQ-66,AQo-AJo,KQo-KJo,AQs-A2s,KJs-K9s,QJs-QTs,JTs,T9s');
+    });
+  });
 
 
 
