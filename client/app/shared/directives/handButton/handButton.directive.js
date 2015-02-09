@@ -4,9 +4,7 @@ angular.module('handDbApp')
   .directive('handButton', function () {
         var controller = ['$scope', function ($scope) {
             $scope.updateColor = function() {
-
-                //FIXME: This is a hack to fix $scope.disabled is always undefined, would prefer to use the attribute instead of the parent variable
-                if($scope.$parent.notInRange == undefined || $scope.$parent.notInRange[$scope.value] == false || $scope.$parent.notInRange[$scope.value] == undefined) {
+                if($scope.disabled == false || $scope.disabled == undefined) {
                   if ($scope.active) {
                     $scope.currentColor = $scope.selectedColor;
                     $scope.currentTextColor = $scope.selectedTextColor;
