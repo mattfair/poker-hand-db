@@ -402,7 +402,7 @@ angular.module('handDbApp')
             }
 
             //update hand range str
-            handRangeStr = handRange.join(",");
+            handRangeStr = _.compact(handRange).join(",");
 
             return handRangeStr;
 

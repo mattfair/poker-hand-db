@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('handDbApp')
-  .controller('PopupHandTableCtrl', function($scope, $modalInstance, HandRangeUtils, handRangeStr){
+  .controller('PopupHandChartCtrl', function($scope, $modalInstance, HandRangeUtils, handRangeStr,notInRange){
 
     $scope.init = function() {
       $scope.editingRangeStr = false;
       $scope.handRangeStr = handRangeStr;
+      $scope.notInRange = notInRange;
       $scope.handRange = HandRangeUtils.handRangeStringToMap($scope.handRangeStr);
       $scope.rangeArrayChanged();
     }
@@ -33,16 +34,19 @@ angular.module('handDbApp')
 
     $scope.init();
   })
-  .directive('popupHandTable', function ($modal) {
+  .directive('popupHandChart', function ($modal) {
 
     var controller = ['$scope', function ($scope) {
       $scope.show = function() {
         var modalInstance = $modal.open({
           templateUrl: 'app/shared/directives/popupHandChart/popupHandChart.html',
-          controller: 'PopupHandTableCtrl',
+          controller: 'PopupHandChartCtrl',
           resolve: {
             handRangeStr: function () {
               return $scope.handRange;
+            },
+            notInRange: function (){
+              return $scope.notInRange;
             }
           }
         });

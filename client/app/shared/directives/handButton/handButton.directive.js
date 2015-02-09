@@ -4,7 +4,9 @@ angular.module('handDbApp')
   .directive('handButton', function () {
         var controller = ['$scope', function ($scope) {
             $scope.updateColor = function() {
-                if($scope.disabled == false || $scope.disabled == undefined) {
+
+                //FIXME: This is a hack to fix $scope.disabled is always undefined, would prefer to use the attribute instead of the parent variable
+                if($scope.$parent.notInRange == undefined || $scope.$parent.notInRange[$scope.value] == false || $scope.$parent.notInRange[$scope.value] == undefined) {
                   if ($scope.active) {
                     $scope.currentColor = $scope.selectedColor;
                     $scope.currentTextColor = $scope.selectedTextColor;
@@ -13,8 +15,10 @@ angular.module('handDbApp')
                     $scope.currentTextColor = $scope.unselectedTextColor;
                   }
                 } else {
-                  $scope.currentColor = "gray";
-                  $scope.currentTextColor = $scope.unselectedTextColor;
+                  $scope.currentColor = "lightgray";
+                  $scope.currentTextColor = "gray";
+                  //make button not-pressable... because it isn't in your range
+                  $scope.editable=false;
                 }
                 $scope.currentStyle = {
                     height: "38px",
@@ -82,10 +86,10 @@ angular.module('handDbApp')
                 selectedColor: '@', //Color when button is selected
                 selectedTextColor: '@', //Text color when button is selected
                 unselectedColor: '@', //Color when button is unselected
-                unselectedTextColor: '@', //Text color when button is unselecte
+                unselectedTextColor: '@', //Text color when button is unselected
                 active: '=', //true when the button is selected
                 editable: '@', //when true, the button can be presses
-                disabled: '=' //when true, the button is grayed out
+                disabled: '=' //when true, the button is grayed out and it isn't editable
             },
             controller: controller,
             template: template,

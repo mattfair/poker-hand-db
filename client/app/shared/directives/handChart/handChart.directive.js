@@ -4,7 +4,6 @@ angular.module('handDbApp')
   .directive('handChart', function () {
 
         var controller = ['$scope', function ($scope) {
-
             $scope.rangeChanged = function(name) {
                 $scope.callback();
             }
@@ -17,7 +16,7 @@ angular.module('handDbApp')
         scope: {
             handRange: '=', //@ reads the attribute value, = provides two-way binding, & works with functions
             callback: '&',
-            editable: '@',
+            editable: '=',
             notInRange: '='
         },
         controller: controller

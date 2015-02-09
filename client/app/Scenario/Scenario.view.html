@@ -78,7 +78,7 @@
   <form class="form-inline">
       <label for="valueRaise">Value Raise</label>
       <input type="text" ng-model="$parent.scenario.valueBet" size="75%" class="form-control"/>
-      <popup-hand-table id="valueRaise" hand-range="$parent.scenario.valueBet" not-in-range="$parent.heroNotInRange"></popup-hand-table>
+      <popup-hand-chart id="valueRaise" hand-range="$parent.scenario.valueBet" not-in-range="$parent.heroNotInRangeAndBluffCall"></popup-hand-chart>
       <label> {{numValueBetCombos}} Combos</label>
   </form>
 </div>
@@ -87,7 +87,7 @@
   <form class="form-inline">
       <label for="bluffRaise">Bluff Raise</label>
       <input type="text" ng-model="$parent.scenario.bluffBet" size="75%" class="form-control"/>
-      <popup-hand-table id="bluffRaise" hand-range="$parent.scenario.bluffBet"></popup-hand-table>
+      <popup-hand-chart id="bluffRaise" hand-range="$parent.scenario.bluffBet" not-in-range="$parent.heroNotInRangeAndRaiseCall"></popup-hand-chart>
       <label> {{numBluffBetCombos}} Combos</label>
   </form>
 </div>
@@ -96,7 +96,7 @@
   <form class="form-inline">
       <label for="call">Call</label>
       <input type="text" ng-model="$parent.scenario.call" size="75%" class="form-control"/>
-      <popup-hand-table id="call" hand-range="$parent.scenario.call"></popup-hand-table>
+      <popup-hand-chart id="call" hand-range="$parent.scenario.call" not-in-range="$parent.heroNotInRangeAndRaiseBluff"></popup-hand-chart>
       <label> {{numCallCombos}} Combos</label>
   </form>
 </div>

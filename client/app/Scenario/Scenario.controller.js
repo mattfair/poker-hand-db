@@ -66,6 +66,17 @@ angular.module('handDbApp')
       socket.unsyncUpdates('preflophandranges');
     });
 
+    $scope.updateNotInRange = function() {
+      var allRangesButValueRaise = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.bluffBet, $scope.scenario.call].join(','));
+      $scope.heroNotInRangeAndBluffCall = HandRangeUtils.notInRangeArray(allRangesButValueRaise);
+
+      var allRangesButBluffRaise = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.valueBet, $scope.scenario.call].join(','));
+      $scope.heroNotInRangeAndRaiseCall = HandRangeUtils.notInRangeArray(allRangesButBluffRaise);
+
+      var allRangesButCall = HandRangeUtils.handRangeStringCompress([$scope.heroHandRangeStr, $scope.scenario.valueBet, $scope.scenario.bluffBet].join(','));
+      $scope.heroNotInRangeAndRaiseBluff = HandRangeUtils.notInRangeArray(allRangesButCall);
+    }
+
     $scope.$watch('scenario.hero_seat', function(newvalue, oldvalue) {
       for(var i=0; i<$scope.preflopHandRanges.length; i++){
         var handRange = $scope.preflopHandRanges[i];
@@ -75,7 +86,7 @@ angular.module('handDbApp')
           break;
         }
       }
-      $scope.heroNotInRange = HandRangeUtils.handRangeMapNegate($scope.heroHandRange);
+      $scope.updateNotInRange();
     });
 
     $scope.$watch('scenario.villain_seat', function(newvalue, oldvalue) {
@@ -98,14 +109,17 @@ angular.module('handDbApp')
     $scope.$watch('scenario.valueBet', function(newvalue, oldvalue) {
       $scope.numValueBetCombos = HandRangeUtils.numHandCombos($scope.scenario.valueBet,$scope.scenario.board);
       $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
+      $scope.updateNotInRange();
     });
     $scope.$watch('scenario.bluffBet', function(newvalue, oldvalue) {
       $scope.numBluffBetCombos = HandRangeUtils.numHandCombos($scope.scenario.bluffBet,$scope.scenario.board);
       $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
+      $scope.updateNotInRange();
     });
     $scope.$watch('scenario.call', function(newvalue, oldvalue) {
       $scope.numCallCombos = HandRangeUtils.numHandCombos($scope.scenario.call,$scope.scenario.board);
       $scope.totalNumHandsDefended = $scope.numValueBetCombos + $scope.numBluffBetCombos + $scope.numCallCombos;
+      $scope.updateNotInRange();
     });
 
     $scope.updateDesiredNumHandsDefended = function() {

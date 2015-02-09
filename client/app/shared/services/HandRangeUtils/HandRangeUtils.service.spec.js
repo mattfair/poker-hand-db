@@ -134,7 +134,11 @@ describe('Service: HandRangeUtils', function () {
 
         it('Resolve vertical and horizontal streak overlapping', function(){
             expect(HandRangeUtils.handRangeStringCompress('AKo,AKs,AQo,AQs,KQo,KQs,AJo,AJs,KJo,KJs,QJo,QJs,ATo,ATs,KTo,KTs,QTo,QTs,JTo,JTs,AA,KK,QQ,JJ,TT')).to.equal("AA-TT,AKo-ATo,KQo-KTo,QJo-QTo,AKs-ATs,KQs-KTs,QJs-QTs,JTo,JTs");
-        })
+        });
+
+        it('Remove empty elements denoted commas with no elements', function(){
+          expect(HandRangeUtils.handRangeStringCompress('AKo,AKs,AQo,AQs,KQo,KQs,AJo,,,AJs,KJo,KJs,QJo,,QJs,ATo,ATs,KTo,KTs,QTo,QTs,JTo,JTs,AA,KK,QQ,JJ,TT,,,,')).to.equal("AA-TT,AKo-ATo,KQo-KTo,QJo-QTo,AKs-ATs,KQs-KTs,QJs-QTs,JTo,JTs");
+        });
 
     });
 
