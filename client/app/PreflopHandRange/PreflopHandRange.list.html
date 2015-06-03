@@ -11,9 +11,11 @@
     <tr ng-repeat="row in preflopHandRanges">
         <td>{{row.position}}</td>
         <td>{{row.game}}</td>
-        <td><button class="btn" ng-click="editRange(row._id)">Edit</button>
-            <button class="btn" ng-click="deleteRange(row._id)">Delete</button></td>
+        <td>
+          <button class="btn btn-github" ng-click="editRange(row._id)"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+          <button class="btn btn-google-plus" ng-click="deleteRange(row._id)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+        </td>
     </tr>
 </table>
-<button class="btn btn-primary" ng-click="createNewRange()">Add Range</button>
+<button class="btn btn-primary" ng-click="createNewRange()"><span class="glyphicon glyphicon-plus"></span> Add Range</button>
 

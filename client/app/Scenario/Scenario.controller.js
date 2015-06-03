@@ -108,30 +108,28 @@ angular.module('handDbApp')
       $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.scenario.villain_range, $scope.scenario.board);
     };
 
-    if($scope.pickPosition) {
-      $scope.$watch('scenario.hero_seat', function (newvalue, oldvalue) {
-        for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
-          var handRange = $scope.preflopHandRanges[i];
-          if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
-            $scope.scenario.hero_range = handRange.range;
-            $scope.heroRangeStringChanged();
-            break;
-          }
+    $scope.$watch('scenario.hero_seat', function (newvalue, oldvalue) {
+      for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
+        var handRange = $scope.preflopHandRanges[i];
+        if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
+          $scope.scenario.hero_range = handRange.range;
+          $scope.heroRangeStringChanged();
+          break;
         }
-        $scope.updateNotInRange();
-      });
+      }
+      $scope.updateNotInRange();
+    });
 
-      $scope.$watch('scenario.villain_seat', function (newvalue, oldvalue) {
-        for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
-          var handRange = $scope.preflopHandRanges[i];
-          if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
-            $scope.scenario.villain_range = handRange.range;
-            $scope.villainRangeStringChanged();
-            break;
-          }
+    $scope.$watch('scenario.villain_seat', function (newvalue, oldvalue) {
+      for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
+        var handRange = $scope.preflopHandRanges[i];
+        if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
+          $scope.scenario.villain_range = handRange.range;
+          $scope.villainRangeStringChanged();
+          break;
         }
-      });
-    }
+      }
+    });
 
     $scope.$watch('numHeroCombos', function(newvalue, oldvalue) {
       $scope.updateDesiredNumHandsDefended();
