@@ -162,6 +162,7 @@ angular.module('handDbApp')
     }
 
     $scope.createNewScenario = function (){
+      $scope.isAddAction=false;
       $state.go("^.new");
     };
 
@@ -196,9 +197,11 @@ angular.module('handDbApp')
     };
 
     $scope.addAction = function(id) {
-      $http.get('/api/Scenario/' + id)
+      $scope.isAddAction=true;
+      $scope.pickPosition=false;
+      $http.get('/api/Scenarios/' + id)
         .then(function(result) {
-          $scope.parent = result.data;
+          $scope.scenario = result.data;
           $state.go("^.new");
         });
     };

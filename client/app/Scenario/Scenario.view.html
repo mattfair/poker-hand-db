@@ -21,7 +21,7 @@
   <textarea class="form-control" rows="1" ng-model="scenario.short_summary" id="short_summary" placeholder="Short summary to describe scenario"></textarea>
 </div>
 
-<div ng-show="$parent.pickPosition">
+<div ng-show="pickPosition">
     <label for="gamelist">Game</label>
     <select id="gamelist" ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
       <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
@@ -47,7 +47,7 @@
 </div>
 
 <table>
-  <tr>
+  <tr ng-show="pickPosition">
     <td>
       <div ng-show="pickPosition">
         <select ng-init="$parent.scenario.hero_seat = $parent.scenario.hero_seat || seats[game][0]" ng-model="$parent.scenario.hero_seat" ng-options="o as o for o in seats[$parent.scenario.game]" class="form-control">

@@ -20,14 +20,17 @@ angular.module('handDbApp')
         url: '/AddAction/:id',
         controller: function($scope, $stateParams){
           $scope.$parent.pickPosition = false;
-          $scope.addAction($stateParams.id);
+          $scope.$parent.addAction($stateParams.id);
+          $scope.$parent.isAddAction = true;
         },
         templateUrl: 'app/Scenario/Scenario.view.html'
       })
       .state('Scenario.new', {
         url: '/new',
         controller: function($scope){
-          $scope.$parent.pickPosition = true;
+          if($scope.$parent.isAddAction==false) {
+            $scope.$parent.pickPosition = true;
+          }
         },
         templateUrl: 'app/Scenario/Scenario.view.html'
       })
