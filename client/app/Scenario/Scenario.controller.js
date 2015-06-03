@@ -206,7 +206,7 @@ angular.module('handDbApp')
         });
       } else {
         //create new scenario
-        $http.post('/api/Scenarios/', $scope.scenario).then(function () {
+        $http.post('/api/Scenarios', $scope.scenario).then(function () {
           $state.go('^.list', {}, {reload: true});
         });
       }
@@ -219,6 +219,9 @@ angular.module('handDbApp')
       $http.get('/api/Scenarios/' + id)
         .then(function(result) {
           $scope.scenario = result.data;
+          $scope.scenario.parent = id;
+          delete $scope.scenario._id;
+          delete $scope.scenario._v;
           $state.go("^.new");
         });
     };

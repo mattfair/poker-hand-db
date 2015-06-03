@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ScenarioSchema = new Schema({
-  parent: String,
+  parent: Schema.Types.ObjectId,
   game: String,
   hero_seat: String,
   hero_range: String,

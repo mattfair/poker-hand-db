@@ -4,7 +4,6 @@ angular.module('handDbApp')
   .directive('board', function () {
     var controller = ['$scope', function ($scope) {
       $scope.edit = true;
-
       $scope.toggle = function () {
 
       }

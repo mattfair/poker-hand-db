@@ -13,9 +13,9 @@ describe('Directive: board', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<board></board>');
+    scope.foo="";
+    element = angular.element('<board values="foo"></board>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the board directive');
   }));
 });
