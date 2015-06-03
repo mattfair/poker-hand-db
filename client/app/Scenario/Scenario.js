@@ -19,7 +19,7 @@ angular.module('handDbApp')
       .state('Scenario.add', {
         url: '/AddAction/:id',
         controller: function($scope, $stateParams){
-          $scope.pickPosition = false;
+          $scope.$parent.pickPosition = false;
           $scope.addAction($stateParams.id);
         },
         templateUrl: 'app/Scenario/Scenario.view.html'
@@ -27,9 +27,17 @@ angular.module('handDbApp')
       .state('Scenario.new', {
         url: '/new',
         controller: function($scope){
-          $scope.pickPosition = true;
+          $scope.$parent.pickPosition = true;
         },
         templateUrl: 'app/Scenario/Scenario.view.html'
-      });
+      })
+     .state('Scenario.edit', {
+      url: '/edit/:id',
+      controller: function($scope, $stateParams){
+        $scope.$parent.pickPosition = false;
+        $scope.$parent.isEdit = true;
+      },
+      templateUrl: 'app/Scenario/Scenario.view.html'
+    });
 
   });

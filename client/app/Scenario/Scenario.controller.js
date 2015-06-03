@@ -6,14 +6,24 @@ angular.module('handDbApp')
       parent: '',
       game: '',
       hero_seat: '',
+      hero_range: '',
       villain_seat: '',
+      villain_range: '',
       defendRate: 0.6,
       actiontohero: '',
       board: '',
       valueBet: '',
       bluffBet: '',
       call: '',
-      notes:''
+      notes:'',
+      short_summary: ''
+    };
+
+    $scope.stageActive = {
+      preflop : 'active',
+      flop : '',
+      turn : '',
+      river: ''
     };
 
     $scope.Math=Math;
@@ -22,12 +32,8 @@ angular.module('handDbApp')
     $scope.editingHeroRangeStr = false;
     $scope.editingVillainRangeStr = false;
 
-    $scope.heroHandRangeStr = '';
-    $scope.villainHandRangeStr = '';
-
-
-    $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
-    $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
+    $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.scenario.hero_range);
+    $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.scenario.hero_range);
     $scope.heroNotInRange = HandRangeUtils.handRangeMapNegate($scope.heroHandRange);
 
     $scope.numHeroCombos = 0;
@@ -45,6 +51,17 @@ angular.module('handDbApp')
       '9 Max': ['UTG', 'UTG+1','UTG+2', 'MP','MP+1','CO','Button','SB','BB'],
       '6 Max': ['UTG', 'MP', 'CO','Button','SB','BB']
     };
+
+    //default don't show board because it's preflop
+    $scope.showBoard = false;
+
+    //default don't show action to because it is just preflop, start out with hand ranges general action
+    $scope.showActionTo = false;
+
+    //default dont' show hand details because it is preflop
+    $scope.showHandDetails = false;
+
+    $scope.isEdit = false;
 
     $scope.parentHandSource = [
       {name:'Value Bet', source:$scope.scenario.parent.valueBet},
@@ -67,41 +84,54 @@ angular.module('handDbApp')
     });
 
     $scope.updateNotInRange = function() {
-      var allRangesButValueRaise = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.bluffBet, $scope.scenario.call].join(','));
+      var allRangesButValueRaise = HandRangeUtils.subtractFromRange($scope.scenario.hero_range, [$scope.scenario.bluffBet, $scope.scenario.call].join(','));
       allRangesButValueRaise = HandRangeUtils.handRangeStringCompress(allRangesButValueRaise);
       $scope.heroNotInRangeAndBluffCall = HandRangeUtils.notInRangeArray(allRangesButValueRaise);
 
-      var allRangesButBluffRaise = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.valueBet, $scope.scenario.call].join(','));
+      var allRangesButBluffRaise = HandRangeUtils.subtractFromRange($scope.scenario.hero_range, [$scope.scenario.valueBet, $scope.scenario.call].join(','));
       allRangesButBluffRaise = HandRangeUtils.handRangeStringCompress(allRangesButBluffRaise);
       $scope.heroNotInRangeAndRaiseCall = HandRangeUtils.notInRangeArray(allRangesButBluffRaise);
 
-      var allRangesButCall = HandRangeUtils.subtractFromRange($scope.heroHandRangeStr, [$scope.scenario.valueBet, $scope.scenario.bluffBet].join(','));
+      var allRangesButCall = HandRangeUtils.subtractFromRange($scope.scenario.hero_range, [$scope.scenario.valueBet, $scope.scenario.bluffBet].join(','));
       allRangesButCall = HandRangeUtils.handRangeStringCompress(allRangesButCall);
       $scope.heroNotInRangeAndRaiseBluff = HandRangeUtils.notInRangeArray(allRangesButCall);
     }
 
-    $scope.$watch('scenario.hero_seat', function(newvalue, oldvalue) {
-      for(var i=0; i<$scope.preflopHandRanges.length; i++){
-        var handRange = $scope.preflopHandRanges[i];
-        if(handRange.game == $scope.scenario.game && handRange.position == newvalue){
-          $scope.heroHandRangeStr = handRange.range;
-          $scope.heroRangeStringChanged();
-          break;
-        }
-      }
-      $scope.updateNotInRange();
-    });
+    $scope.heroRangeStringChanged = function() {
+      $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.scenario.hero_range);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.parent.board);
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.board);
+    };
 
-    $scope.$watch('scenario.villain_seat', function(newvalue, oldvalue) {
-      for(var i=0; i<$scope.preflopHandRanges.length; i++){
-        var handRange = $scope.preflopHandRanges[i];
-        if(handRange.game == $scope.scenario.game && handRange.position == newvalue){
-          $scope.villainHandRangeStr = handRange.range;
-          $scope.villainRangeStringChanged();
-          break;
+    $scope.villainRangeStringChanged = function() {
+      $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.scenario.villain_range);
+      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.scenario.villain_range, $scope.scenario.board);
+    };
+
+    if($scope.pickPosition) {
+      $scope.$watch('scenario.hero_seat', function (newvalue, oldvalue) {
+        for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
+          var handRange = $scope.preflopHandRanges[i];
+          if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
+            $scope.scenario.hero_range = handRange.range;
+            $scope.heroRangeStringChanged();
+            break;
+          }
         }
-      }
-    });
+        $scope.updateNotInRange();
+      });
+
+      $scope.$watch('scenario.villain_seat', function (newvalue, oldvalue) {
+        for (var i = 0; i < $scope.preflopHandRanges.length; i++) {
+          var handRange = $scope.preflopHandRanges[i];
+          if (handRange.game == $scope.scenario.game && handRange.position == newvalue) {
+            $scope.scenario.villain_range = handRange.range;
+            $scope.villainRangeStringChanged();
+            break;
+          }
+        }
+      });
+    }
 
     $scope.$watch('numHeroCombos', function(newvalue, oldvalue) {
       $scope.updateDesiredNumHandsDefended();
@@ -130,7 +160,7 @@ angular.module('handDbApp')
     }
 
     $scope.boardChanged = function() {
-      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.board);
     }
 
     $scope.createNewScenario = function (){
@@ -138,7 +168,33 @@ angular.module('handDbApp')
     };
 
     $scope.deleteScenario = function(id) {
+      $http.delete('/api/Scenarios/'+id).then(function(){
+        $state.go('^.list', {}, {reload: true});
+      });
+    };
 
+    $scope.editScenario = function(id) {
+      $http.get('/api/Scenarios/'+id).success(function(scenario) {
+        $scope.scenario = scenario;
+        $scope.id = id;
+        $scope.heroRangeStringChanged();
+        $scope.villainRangeStringChanged();
+        $scope.updateNotInRange();
+        $state.go('^.edit', {id:id});
+      });
+    }
+
+    $scope.saveScenario = function() {
+      if($scope.isEdit) {
+        $http.patch('/api/Scenarios/'+$scope.id, $scope.scenario).then(function () {
+          $state.go('^.list', {}, {reload: true});
+        });
+      } else {
+        //create new scenario
+        $http.post('/api/Scenarios/', $scope.scenario).then(function () {
+          $state.go('^.list', {}, {reload: true});
+        });
+      }
     };
 
     $scope.addAction = function(id) {
@@ -160,27 +216,17 @@ angular.module('handDbApp')
         $scope.villainRangeStringChanged();
       }
     });
-    $scope.heroRangeStringChanged = function() {
-      $scope.heroHandRange = HandRangeUtils.handRangeStringToMap($scope.heroHandRangeStr);
-      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.parent.board);
-      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
-    };
-
-    $scope.villainRangeStringChanged = function() {
-      $scope.villainHandRange = HandRangeUtils.handRangeStringToMap($scope.villainHandRangeStr);
-      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.villainHandRangeStr, $scope.scenario.board);
-    };
-
     $scope.heroRangeArrayChanged = function() {
       var str = HandRangeUtils.handRangeToString($scope.heroHandRange);
-      $scope.heroHandRangeStr = HandRangeUtils.handRangeStringCompress(str);
-      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.parent.board);
-      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.heroHandRangeStr, $scope.scenario.board);
+      $scope.scenario.hero_range = HandRangeUtils.handRangeStringCompress(str);
+      $scope.numHeroCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.parent.board);
+      $scope.totalCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.board);
     };
 
     $scope.villainRangeArrayChanged = function() {
       var str = HandRangeUtils.handRangeToString($scope.villainHandRange);
-      $scope.villainHandRangeStr = HandRangeUtils.handRangeStringCompress(str);
-      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.villainHandRangeStr, $scope.scenario.board);
+      $scope.scenario.villain_range = HandRangeUtils.handRangeStringCompress(str);
+      $scope.numVillainCombos = HandRangeUtils.numHandCombos($scope.scenario.villain_range, $scope.scenario.board);
     };
+
   });

@@ -2,11 +2,48 @@
   <h2>Scenario</h2>
 </header>
 
-<div ng-show="pickPosition">
-    Game:
-    <select ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
+<!--
+<div id="form-container">
+  <!-- the links to our nested states using relative paths -->
+  <!-- add the active class if the state matches our ui-sref -->
+  <!--
+  <div id="status-buttons" class="text-center">
+    <a ng-class="stageActive.preflop"><span>1</span> Preflop</a>
+    <a ng-class="stageActive.flop"><span>2</span> Flop</a>
+    <a ng-class="stageActive.turn"><span>3</span> Turn</a>
+    <a ng-class="stageActive.river"><span>4</span> River</a>
+  </div>
+</div>
+-->
+
+<div class="form-group">
+  <label for="short_summary">Short Summary</label>
+  <textarea class="form-control" rows="1" ng-model="scenario.short_summary" id="short_summary" placeholder="Short summary to describe scenario"></textarea>
+</div>
+
+<div ng-show="$parent.pickPosition">
+    <label for="gamelist">Game</label>
+    <select id="gamelist" ng-model="$parent.scenario.game" ng-init="$parent.scenario.game = $parent.scenario.game || games[0]" class="form-control">
       <option ng-repeat="game in games" value="{{game}}">{{game}}</option>
     </select>
+</div>
+
+<div ng-show="showActionTo">
+  <div class="form-group">
+    <form class="form-inline">
+      <label for="actiontohero">Action To:</label>
+      <div id="actiontohero">
+        <label class="radio">
+          <input type="radio" name="actiontohero" value="check" ng-model="scenario.actiontohero">Check
+        </label>
+        <label class="radio">
+          <input type="radio" name="actiontohero" value="raise" ng-model="scenario.actiontohero">Raise
+        </label>
+      </div>
+
+    </form>
+  </div>
+
 </div>
 
 <table>
@@ -33,27 +70,30 @@
   </tr>
   <tr>
     <td>
-      <hand-chart hand-range="$parent.heroHandRange" callback="heroRangeArrayChanged()" editable=false></hand-chart>
+      <hand-chart hand-range="$parent.heroHandRange" callback="heroRangeArrayChanged()" editable=true></hand-chart>
       <p align="center">{{numHeroCombos}} combinations</p>
-      <input disabled type="text" ng-model="$parent.heroHandRangeStr" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
+      <input type="text" ng-model="$parent.scenario.hero_range" ng-focus="$parent.editingHeroRangeStr=true" ng-blur="$parent.editingHeroRangeStr=false"  class="form-control"/>
     </td>
     <td>
       <h1>Vs</h1>
     </td>
     <td>
-      <hand-chart hand-range="$parent.villainHandRange" callback="villainRangeArrayChanged()" editable="false"></hand-chart>
+      <hand-chart hand-range="$parent.villainHandRange" callback="villainRangeArrayChanged()" editable=true></hand-chart>
       <p align="center">{{numVillainCombos}} combinations</p>
-      <input disabled type="text" ng-model="$parent.villainHandRangeStr" ng-focus="$parent.editingVillianRangeStr=true" ng-blur="$parent.editingVillianRangeStr=false"  class="form-control"/>
+      <input type="text" ng-model="$parent.scenario.villain_range" ng-focus="$parent.editingVillainRangeStr=true" ng-blur="$parent.editingVillainRangeStr=false"  class="form-control"/>
     </td>
   </tr>
   <tr>
   </tr>
 </table>
 
+<div ng-show="showHandDetails">
 
-<div class="form-group">
-  <label for="board">Board</label>
-  <board id="board" values="scenario.board" on-board-change="$parent.boardChanged()"></board>
+<div ng-show="showBoard">
+  <div class="form-group">
+    <label for="board">Board</label>
+    <board id="board" values="scenario.board" on-board-change="$parent.boardChanged()"></board>
+  </div>
 </div>
 
 <form class="form-inline">
@@ -112,3 +152,14 @@
   <textarea class="form-control" rows="3" ng-model="scenario.notes" id="notes" placeholder="Notes about current scenario to remember"></textarea>
 </div>
 
+</div>
+
+
+<br/>
+<div class="form-group row">
+  <div class="col-xs-6 col-xs-offset-3">
+    <a class="btn btn-block btn-info" ng-click="saveScenario()">
+      Save <span class="glyphicon glyphicon-save"></span>
+    </a>
+  </div>
+</div>

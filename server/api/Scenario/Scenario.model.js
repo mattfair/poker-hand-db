@@ -7,13 +7,17 @@ var ScenarioSchema = new Schema({
   parent: String,
   game: String,
   hero_seat: String,
+  hero_range: String,
   villain_seat: String,
+  villain_range: String,
+  defendRate: Number,
   actiontohero: String,
   board: String,
   valueBet: String,
   bluffBet: String,
   call: String,
-  notes: String
+  notes: String,
+  short_summary: String
 });
 
 module.exports = mongoose.model('Scenario', ScenarioSchema);

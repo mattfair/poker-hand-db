@@ -5,16 +5,18 @@
 <table class="table table-striped">
     <tr>
         <th>Scenario</th>
+        <th>Game</th>
         <th>Action</th>
     </tr>
     <tr ng-repeat="row in scenarios">
-        <td>{{row.position}}</td>
+        <td>{{row.hero_seat}} vs {{row.villain_seat}} {{row.short_summary}}</td>
         <td>{{row.game}}</td>
         <td>
-          <button class="btn" ng-click="addAction(row._id)">Add Action</button>
-          <button class="btn" ng-click="deleteScenario(row._id)">Delete</button>
+          <button class="btn btn-github" ng-click="addAction(row._id)"><span class="glyphicon glyphicon-plus"></span> Add Action</button>
+          <button class="btn btn-github" ng-click="editScenario(row._id)"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+          <button class="btn btn-google-plus" ng-click="deleteScenario(row._id)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
         </td>
     </tr>
 </table>
-<button class="btn btn-primary" ng-click="createNewScenario()">New Scenario</button>
+<button class="btn btn-primary" ng-click="createNewScenario()"><span class="glyphicon glyphicon-plus"></span> New Scenario</button>
 
