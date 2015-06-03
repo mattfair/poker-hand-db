@@ -1,5 +1,5 @@
-#HandDB
-> HandDB allows you to manage poker hand ranges for many different scenarios to allow you to develop optimal poker playing strategies using poker theory. 
+#Poker Hand DB
+>Poker Hand DB allows you to manage poker hand ranges for many different scenarios to allow you to develop optimal poker playing strategies using poker theory. 
 
 ##About
 HandDB is a AngularJS (https://angularjs.org/) webapp generated from the Yeoman generator for AngularJS Fullstack (https://github.com/DaftMonk/generator-angular-fullstack) and a Node.js (http://nodejs.org/) back-end.
