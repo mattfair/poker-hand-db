@@ -19,13 +19,6 @@ angular.module('handDbApp')
       short_summary: ''
     };
 
-    $scope.stageActive = {
-      preflop : 'active',
-      flop : '',
-      turn : '',
-      river: ''
-    };
-
     $scope.Math=Math;
     $scope.preflopHandRanges = [];
 
@@ -161,8 +154,33 @@ angular.module('handDbApp')
       $scope.totalCombos = HandRangeUtils.numHandCombos($scope.scenario.hero_range, $scope.scenario.board);
     }
 
+    $scope.updateScenario = function(scenario){
+      $scope.scenario = scenario;
+      $scope.heroRangeStringChanged();
+      $scope.villainRangeStringChanged();
+      $scope.updateNotInRange();
+    }
+
     $scope.createNewScenario = function (){
       $scope.isAddAction=false;
+      $scope.isEdit=false;
+      var emptyScenario = {
+        parent: '',
+        game: '',
+        hero_seat: '',
+        hero_range: '',
+        villain_seat: '',
+        villain_range: '',
+        defendRate: 0.6,
+        actiontohero: '',
+        board: '',
+        valueBet: '',
+        bluffBet: '',
+        call: '',
+        notes:'',
+        short_summary: ''
+      };
+      $scope.updateScenario(emptyScenario);
       $state.go("^.new");
     };
 
@@ -174,11 +192,9 @@ angular.module('handDbApp')
 
     $scope.editScenario = function(id) {
       $http.get('/api/Scenarios/'+id).success(function(scenario) {
-        $scope.scenario = scenario;
         $scope.id = id;
-        $scope.heroRangeStringChanged();
-        $scope.villainRangeStringChanged();
-        $scope.updateNotInRange();
+
+        $scope.updateScenario(scenario);
         $state.go('^.edit', {id:id});
       });
     }
@@ -199,6 +215,7 @@ angular.module('handDbApp')
     $scope.addAction = function(id) {
       $scope.isAddAction=true;
       $scope.pickPosition=false;
+      $scope.isEdit=false;
       $http.get('/api/Scenarios/' + id)
         .then(function(result) {
           $scope.scenario = result.data;

@@ -19,9 +19,7 @@ angular.module('handDbApp')
       .state('Scenario.add', {
         url: '/AddAction/:id',
         controller: function($scope, $stateParams){
-          $scope.$parent.pickPosition = false;
           $scope.$parent.addAction($stateParams.id);
-          $scope.$parent.isAddAction = true;
         },
         templateUrl: 'app/Scenario/Scenario.view.html'
       })
@@ -39,6 +37,7 @@ angular.module('handDbApp')
       controller: function($scope, $stateParams){
         $scope.$parent.pickPosition = false;
         $scope.$parent.isEdit = true;
+        $scope.$parent.isAddAction = false;
       },
       templateUrl: 'app/Scenario/Scenario.view.html'
     });
